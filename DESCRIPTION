@@ -4,6 +4,8 @@ Version: 0.0.0.9000
 Authors@R: person("Alex", "Bokov", email = "alex.bokov@gmail.com", role = c("aut", "cre"))
 Description: These are various utilities I wrote to streamline my own work and to help the students in my Introduction to Data Science class at UTHealth San Antonio. Hopefully some of them will be useful to others as well.
 Depends: R (>= 3.4.4)
+Imports: 
+  magrittr
 License: MIT
 Encoding: UTF-8
 LazyData: true
