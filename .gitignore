@@ -42,6 +42,7 @@ local
 
 # Other temp files
 .~lock.*#
+*.sterr
 
 # We don't commit data unless we really mean it.
 *.csv
