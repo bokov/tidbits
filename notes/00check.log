@@ -1,0 +1,307 @@
+* using log directory ‘/tmp/tidbits.Rcheck’
+* using R version 3.4.4 (2018-03-15)
+* using platform: x86_64-pc-linux-gnu (64-bit)
+* using session charset: UTF-8
+* checking for file ‘tidbits/DESCRIPTION’ ... OK
+* this is package ‘tidbits’ version ‘0.0.0.9000’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... WARNING
+Found the following executable files:
+  .git/objects/04/f64e413a49e45a5053476762c8eade83ddc6f8
+  .git/objects/08/86c7da3aa77e7dd8c4401915f978c05866e2ec
+  .git/objects/0b/4f45d03eaf2fddbcb78a1a1575fd18f0970df6
+  .git/objects/0c/198d87ef983125cea6ecdeaa16445f4c875bc8
+  .git/objects/0e/ef32f7f7e7561b6ffc51f0c46d6822aea9293b
+  .git/objects/11/dcb76f1a02b20d8da9ac4f5e3f1f8cf5a69c30
+  .git/objects/13/f8c5a07216b863ede93e73dfa0eb2f220d03d5
+  .git/objects/18/25a17be62d6ea2bab889f44d42a79c93528329
+  .git/objects/22/19261bb0ca8657fcf1cc98c567be0db0283ad5
+  .git/objects/26/b5a02ae8963ba268f3295ce6938ec496968b2a
+  .git/objects/26/bf69b6a3b1f2ba737318a034ab5760c491035e
+  .git/objects/2a/18313a453b1504a01f638c61b9e29862920aea
+  .git/objects/2a/c9bd7c26592edcc2125c32561871247857066f
+  .git/objects/2c/659a9274e2864f4e1658d478d3ecebe19497f7
+  .git/objects/2e/1616dd3ccb16c591369dfbccd8a50c21d5c21e
+  .git/objects/30/388644f7c35e057002b025ef8fcff79bd34e78
+  .git/objects/30/cf105214153577f022e1dc51e541a538be6c35
+  .git/objects/33/624575cc157d0daaba884b7994e12f7d87d0dc
+  .git/objects/36/a7bb425fd745bc3482bf4de838a9f4e739f62b
+  .git/objects/36/cbaa29940810070337b386e5a7afbce1b75c34
+  .git/objects/37/a3d8be11a3b3b1eefbe34d91726faa01f9d022
+  .git/objects/3f/3b7800874248f82cc5e3c3b91962bb9a51fc24
+  .git/objects/42/093468bd877d00479ff95ce3869fd918438254
+  .git/objects/46/23e45055a0eae21a278bdd76c2e8fdff603218
+  .git/objects/48/88dae6fcf4ce522aebb8ee00b9e64e58f46541
+  .git/objects/49/e8282becf2a9e95a70fea10f582a7bd4fa8f00
+  .git/objects/4a/8cad6b24918694520bb87e183a514cbc0fc2ee
+  .git/objects/56/cda6ed524874e3533c31b6686dd5dd10cd8cb7
+  .git/objects/58/4e9b2a5a04b30e6aafd38a2e32b66983c54cd7
+  .git/objects/58/7634007e952d30c706b2b25fce880bfe358869
+  .git/objects/5a/f34dba3486b5bc6cf7f7fc903283d97205362d
+  .git/objects/5d/dd75e69562b3943fa95e7701f49307074aea31
+  .git/objects/5e/4633e4da336c5fbac73092524ad121336634f4
+  .git/objects/60/1f39d9ec595bec550749d11effa0937560d5cb
+  .git/objects/62/308c386aef9f2f7310dc059da1d5c58a751e60
+  .git/objects/67/d8b45c692f3aed141a74e3e0ec138a8fdc958e
+  .git/objects/69/f195b6fd80fae2c0d37fcd1e836474f4ad4d6c
+  .git/objects/6b/ad7341cb4d27019dea2c281445c0e4f6626dc1
+  .git/objects/6f/ce635a7a306d6121a303ddfa7bb7d9af287fc9
+  .git/objects/71/ccb46258e142a45ee1ece187e18e265c93df8f
+  .git/objects/77/6ca834c1370f9472336506eedd619712c2d7e0
+  .git/objects/78/36029f508ef81916b6fc7ff888e83f87e5c1f9
+  .git/objects/7f/398584b9f1fdc45a36f63512d9135032b3ba88
+  .git/objects/82/978ba844885117a5e9001193cd60a3d4d35f5a
+  .git/objects/82/b0b8b06f5929cf62e08d972db5f106c6c105e2
+  .git/objects/8a/11d063bf544fc897334ae9d04a549e7cffe248
+  .git/objects/8a/6360891fe9272127234cc418e7fba9ee38ef98
+  .git/objects/8c/3ed60b9d47ff93218ad5d8f0cf2c3456376d7f
+  .git/objects/91/114bf2f2bba5e0c5252e75018da19b869776f1
+  .git/objects/97/5151a9901403e1e8e3e2037f53245210936830
+  .git/objects/99/6f5b85b0a256e8f0a9d2863164f70ae14dc785
+  .git/objects/99/73641ee9d7687bebcb4a346889ebb253e91ea7
+  .git/objects/9c/50b6f343c906f861324ce7340ae7d1102decb7
+  .git/objects/a3/610e8f0dd609005585a37fbb9fdf5d1cf92c83
+  .git/objects/a6/a3acaf0829329a34b4196885a86a5f599d4148
+  .git/objects/a8/d13b03cf638d81ef744a47d02c6dcbade48343
+  .git/objects/aa/387d588ab66cbc883cf14c2edaf9beaede1fe6
+  .git/objects/ad/3a281a31731dacd384a04207dbb571ca0f4c8c
+  .git/objects/b2/ec6582faf308f782ccf2db24fa96e8069c1b2f
+  .git/objects/b7/8eb640a070567e497492faf9cb3635ece9c7e3
+  .git/objects/b9/71785f62278b80451a0d70ab6684a313e7e77d
+  .git/objects/bc/fc882994011d0b38fab988e7a9005abbffbffa
+  .git/objects/bd/32c81ddc609baadee8b64261702d14d2f09d4a
+  .git/objects/bf/66005b71f5c08ba3308b720bb0621d7c970f79
+  .git/objects/bf/6c00d0a858a0aa301c9b7b263ab43ed74c3888
+  .git/objects/c2/29a25914b5a2df7b87a1116c8e05f8b823221b
+  .git/objects/c4/67e683edd15ba4059f24a06194c9c808e6c174
+  .git/objects/c5/b855ba5ce158b00ad4dfc100a7181a69e3081a
+  .git/objects/ca/c92af0400dd681f54a3376d7ac25f66ae3caae
+  .git/objects/cb/017b115ddca8bab9380f3cfb546371261d4da2
+  .git/objects/cb/7332f05bd85fbc98c914f1bfd7d891fe24b1ca
+  .git/objects/d4/4f61bdcf30f0a4d3ba7efb80b989c5713f1678
+  .git/objects/d5/e1200682904e0ae96db1159726981ad9157de9
+  .git/objects/d7/b34875d1b25e625a834baaf1892c3be11da4a4
+  .git/objects/da/de91a8e327203326d876fd9f6f1994746b3a4b
+  .git/objects/db/f42c4f02e4ff9965688d2e43c8ed6402afdd1c
+  .git/objects/de/ca339d8d69bc544333ca27017b9ea6003fa4f4
+  .git/objects/e4/6ffe77311a1fcb046049fe39111accd6758982
+  .git/objects/ea/79b48252312bae75083b8c9dcc4c093137addb
+  .git/objects/ed/bf5f15a10153af0609ba6a53c47c02721c2814
+  .git/objects/f0/e0ed20a53f0554e3055e6c956a65bc034ef598
+  .git/objects/f3/0fccc4596aaf95af18aafc29aa5f740171b794
+  .git/objects/f7/e9b25255c129efb3da76ee5f134aee6e5a3af7
+  .git/objects/fe/9c3de056cf57e5e3c185da9415d979d6db5867
+Source packages should not contain undeclared executable files.
+See section ‘Package structure’ in the ‘Writing R Extensions’ manual.
+* checking for hidden files and directories ... NOTE
+Found the following hidden files and directories:
+  .Rhistory
+  .gitignore
+  .rstudio.sterr
+  notes/.~lock.functions_for_planning.csv#
+  .Rproj.user
+  .git
+These were most likely included in error. See section ‘Package
+structure’ in the ‘Writing R Extensions’ manual.
+* checking for portable file names ... WARNING
+Found the following file with a non-portable file name:
+  notes/.~lock.functions_for_planning.csv#
+These are not fully portable file names.
+See section ‘Package structure’ in the ‘Writing R Extensions’ manual.
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘tidbits’ can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking DESCRIPTION meta-information ... NOTE
+Malformed Title field: should not end in a period.
+License components which are templates and need '+ file LICENSE':
+  MIT
+Checking should be performed on sources prepared by ‘R CMD build’.
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking dependencies in R code ... WARNING
+'::' or ':::' imports not declared from:
+  ‘devtools’ ‘rstudioapi’
+'library' or 'require' calls not declared from:
+  ‘rstudioapi’ ‘trailR’
+'library' or 'require' calls in package code:
+  ‘rstudioapi’ ‘trailR’
+  Please use :: or requireNamespace() instead.
+  See section 'Suggested packages' in the 'Writing R Extensions' manual.
+Namespace in Imports field not imported from: ‘magrittr’
+  All declared Imports should be used.
+':::' call which should be '::': ‘readxl:::format_from_signature’
+  See the note in ?`:::` about the use of this operator.
+* checking S3 generic/method consistency ... WARNING
+getCall:
+  function(x, ...)
+getCall.data.frame:
+  function(xx)
+
+getCall:
+  function(x, ...)
+getCall.gg:
+  function(xx)
+
+getCall:
+  function(x, ...)
+getCall.list:
+  function(xx)
+
+update:
+  function(object, ...)
+update.call:
+  function(xx, ...)
+
+See section ‘Generic functions and methods’ in the ‘Writing R
+Extensions’ manual.
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... NOTE
+clean_slate: warning in list.files(pattern = removepatt, all = T,
+  recursive = T, full.names = T): partial argument match of 'all' to
+  'all.files'
+clean_slate: warning in ls(all = all, envir = envir): partial argument
+  match of 'all' to 'all.names'
+clean_slate: warning in ls(all = all, envir = .GlobalEnv): partial
+  argument match of 'all' to 'all.names'
+grepor: warning in grep(paste0(patterns, collapse = "|"), xx, val = T):
+  partial argument match of 'val' to 'value'
+autoread : <anonymous>: no visible global function definition for
+  ‘setNames’
+autoread: no visible global function definition for ‘guess_encoding’
+autoread: no visible global function definition for ‘unzip’
+autoread: no visible global function definition for ‘is’
+autoread: no visible binding for global variable ‘read_delim’
+colinfo: no visible global function definition for ‘na.omit’
+getTryMsg: no visible global function definition for ‘is’
+getTryMsg: no visible binding for global variable ‘bla’
+instrequire: no visible global function definition for
+  ‘install.packages’
+load_deps: no visible global function definition for ‘tload’
+personalizeTemplate: no visible global function definition for ‘spin’
+t_autoread: no visible global function definition for ‘is’
+t_autoread: no visible binding for global variable ‘tread’
+tblinfo: no visible binding for global variable ‘frc_missing’
+tblinfo: no visible binding for global variable ‘n_nonmissing’
+tblinfo: no visible binding for global variable ‘uniquevals’
+tblinfo: no visible binding for global variable ‘isnum’
+tblinfo: no visible binding for global variable ‘n_missing’
+tblinfo: no visible binding for global variable ‘c_ordinal’
+tblinfo: no visible binding for global variable ‘c_tm’
+tblinfo: no visible binding for global variable ‘c_tf’
+tblinfo: no visible binding for global variable ‘c_numeric’
+tblinfo: no visible binding for global variable ‘c_factor’
+Undefined global functions or variables:
+  bla c_factor c_numeric c_ordinal c_tf c_tm frc_missing guess_encoding
+  install.packages is isnum n_missing n_nonmissing na.omit read_delim
+  setNames spin tload tread uniquevals unzip
+Consider adding
+  importFrom("methods", "is")
+  importFrom("stats", "na.omit", "setNames")
+  importFrom("utils", "install.packages", "unzip")
+to your NAMESPACE file (and ensure that your DESCRIPTION Imports field
+contains 'methods').
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... WARNING
+Undocumented code objects:
+  ‘clean_slate’ ‘find_path’ ‘find_relpath’ ‘gadd’ ‘gbr’ ‘gci’ ‘gco’
+  ‘getCall.data.frame’ ‘getCall.gg’ ‘getCall.list’ ‘getParentDots’
+  ‘getTryMsg’ ‘get_os’ ‘git_’ ‘git_commit’ ‘git_merge’ ‘gmr’ ‘gp’ ‘gst’
+  ‘load_deps’ ‘personalizeTemplate’ ‘systemwrapper’ ‘t_autoread’
+  ‘tblinfo’ ‘update.call’ ‘with_cm’
+All user-level objects in a package should have documentation entries.
+See chapter ‘Writing R documentation files’ in the ‘Writing R
+Extensions’ manual.
+* checking for code/documentation mismatches ... OK
+* checking Rd \usage sections ... WARNING
+Undocumented arguments in documentation object 'autoread'
+  ‘file’ ‘na’ ‘fixnames’ ‘file_args’ ‘...’
+
+Undocumented arguments in documentation object 'cm'
+  ‘xx’ ‘comment’ ‘append’ ‘transf’
+
+Undocumented arguments in documentation object 'colinfo'
+  ‘col’ ‘custom_stats’ ‘...’
+
+Undocumented arguments in documentation object 'fullargs'
+  ‘syspar’ ‘env’ ‘expand.dots’
+
+Undocumented arguments in documentation object 'git_add'
+  ‘files’ ‘...’
+
+Undocumented arguments in documentation object 'git_autoconf'
+  ‘upstream’ ‘...’
+
+Undocumented arguments in documentation object 'git_checkout'
+  ‘which’ ‘...’
+
+Undocumented arguments in documentation object 'git_lsfiles'
+  ‘...’
+
+Undocumented arguments in documentation object 'git_move'
+  ‘from’ ‘to’ ‘...’
+
+Undocumented arguments in documentation object 'git_newbranch'
+  ‘branch’ ‘pushorigin’ ‘...’
+
+Undocumented arguments in documentation object 'git_other'
+  ‘...’
+
+Undocumented arguments in documentation object 'git_push'
+  ‘...’
+
+Undocumented arguments in documentation object 'git_rename'
+  ‘from’ ‘to’ ‘...’
+
+Undocumented arguments in documentation object 'git_status'
+  ‘print’ ‘diff_filters’ ‘...’
+
+Undocumented arguments in documentation object 'instrequire'
+  ‘pkgs’ ‘quietly’ ‘dependencies’ ‘repos’ ‘...’
+
+Functions with \usage entries need to have the appropriate \alias
+entries, and all their arguments documented.
+The \usage entries must correspond to syntactically valid R code.
+See chapter ‘Writing R documentation files’ in the ‘Writing R
+Extensions’ manual.
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking examples ... ERROR
+Running examples in ‘tidbits-Ex.R’ failed
+The error most likely occurred in:
+
+> ### Name: with_attrs
+> ### Title: Append or replace attributes of any object in a pipeline-frindly
+> ###   way.
+> ### Aliases: with_attrs
+> 
+> ### ** Examples
+> 
+> # Change an object's attribute
+> with_attr(iris,list(class='list'))
+Error in with_attr(iris, list(class = "list")) : 
+  could not find function "with_attr"
+Execution halted
+* checking PDF version of manual ... WARNING
+LaTeX errors when creating PDF version.
+This typically indicates Rd problems.
+* checking PDF version of manual without hyperrefs or index ... OK
+* DONE
+Status: 1 ERROR, 7 WARNINGs, 3 NOTEs
