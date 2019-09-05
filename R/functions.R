@@ -727,13 +727,13 @@ autoread <- function(file,na=c('','.','(null)','NULL','NA')
     #   sheets <- try(.Call('readxl_xls_sheets',PACKAGE='readxl',file),silent=T);
     #   if(!is(sheets,'try-error')) reader <- 'read_xls';
     # }
-    xlreader <- get(reader,envir=as.environment('package:readxl'));
+    #xlreader <- get(reader,envir=as.environment('package:readxl'));
     if(length(sheets)>1 && !'sheet' %in% names(args)){
       warning(
         "\nMultiple sheets found:\n",paste(sheets,collapse=', ')
         ,"\nReading in the first sheet. If you want a different one"
         ,"\nplease specify a 'sheet' argument")};
-    xlargs <- args[intersect(names(args),names(formals(xlreader)))];
+    xlargs <- args[intersect(names(args),names(formals(quote(reader))))];
     xlargs$na <- na;
     # if(!'n_max' %in% names(xlargs)) xlargs$n_max <- Inf;
     # if(!'skip' %in% names(xlargs)) xlargs$skip <- 0;
@@ -741,7 +741,7 @@ autoread <- function(file,na=c('','.','(null)','NULL','NA')
     # xlargs$n_max <- chunk;
     message('About to read Excel file');
     #out <- rowsread <- do.call(reader,c(list(path=file),xlargs));
-    out <- do.call(xlreader,c(list(path=file),xlargs));
+    out <- do.call(reader,c(list(path=file),xlargs));
     # while(nrow(rowsread)>0 && nrow(out) < n_max_orig){
     #   xlargs$skip <- xlargs$skip + chunk;
     #   #browser();
