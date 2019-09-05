@@ -813,7 +813,7 @@ tblinfo <- function(dat,custom_stats=alist()
                       ,c_factor=uniquevals<20&!isnum
                       ,c_complex=!(c_ordinal|c_tm|c_tf|c_numeric|c_factor)
                     ),...){
-  out <- bind_rows(sapply(dat,colinfo,custom_stats=custom_stats,simplify=F)
+  out <- dplyr::bind_rows(sapply(dat,colinfo,custom_stats=custom_stats,simplify=F)
                    ,.id='column');
   for(ii in names(info_cols)) out[[ii]] <- eval(info_cols[[ii]],envir=out);
   dots <- getParentDots();
