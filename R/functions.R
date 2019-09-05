@@ -733,7 +733,8 @@ autoread <- function(file,na=c('','.','(null)','NULL','NA')
         "\nMultiple sheets found:\n",paste(sheets,collapse=', ')
         ,"\nReading in the first sheet. If you want a different one"
         ,"\nplease specify a 'sheet' argument")};
-    xlargs <- args[intersect(names(args),names(formals(quote(reader))))];
+    xlargs <- args[intersect(names(args)
+                             ,names(formals(eval(as.name(reader)))))];
     xlargs$na <- na;
     # if(!'n_max' %in% names(xlargs)) xlargs$n_max <- Inf;
     # if(!'skip' %in% names(xlargs)) xlargs$skip <- 0;
