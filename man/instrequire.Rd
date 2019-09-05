@@ -3,7 +3,7 @@
 \name{instrequire}
 \alias{instrequire}
 \title{This function takes a list of package names, loads them if they are
-available, otherwise attempts to install each one and then again 
+available, otherwise attempts to install each one and then again
 attempts to load it.}
 \usage{
 instrequire(pkgs, quietly = TRUE, dependencies = TRUE,
@@ -11,6 +11,6 @@ instrequire(pkgs, quietly = TRUE, dependencies = TRUE,
 }
 \description{
 This function takes a list of package names, loads them if they are
-available, otherwise attempts to install each one and then again 
+available, otherwise attempts to install each one and then again
 attempts to load it.
 }

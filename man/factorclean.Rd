@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions.R
 \name{factorclean}
 \alias{factorclean}
-\title{A function to re-order and/or rename the levels of a factor or 
+\title{A function to re-order and/or rename the levels of a factor or
 vector with optional cleanup.}
 \usage{
 factorclean(xx, lookuptable, reorder = T, unmatched = 1,
@@ -11,7 +11,7 @@ factorclean(xx, lookuptable, reorder = T, unmatched = 1,
   fromto = c("code", "label"))
 }
 \arguments{
-\item{xx}{a vector... if not a factor will be converted to 
+\item{xx}{a vector... if not a factor will be converted to
 one}
 
 \item{lookuptable}{matrix-like objects where the first column will
@@ -21,7 +21,7 @@ not matrix-like, the levels will be set to these
 values in the order they occur in `lookuptable`.
 If there are duplicated values in the first column
 only the first one gets used, with a warning.
-Duplicate values in the second column are allowed 
+Duplicate values in the second column are allowed
 and are a feature.}
 
 \item{reorder}{Whether or not to change the order of the factor
@@ -30,21 +30,21 @@ default (logical). By default is `TRUE`, is set to
 `FALSE` will try to preserve the original order of
 the levels.}
 
-\item{unmatched}{Scalar value. If equal to -1 and `reorder` is `TRUE` 
-then unmatched original levels are prepended to the 
-matched ones in their original order of occurence. If 
-equal to 1, then appended in their original order of 
-occurrence. If some other value, then they are all 
-binned in one level of that name. The (empty) new ones 
+\item{unmatched}{Scalar value. If equal to -1 and `reorder` is `TRUE`
+then unmatched original levels are prepended to the
+matched ones in their original order of occurence. If
+equal to 1, then appended in their original order of
+occurrence. If some other value, then they are all
+binned in one level of that name. The (empty) new ones
 always go to the end.}
 
 \item{droplevels}{Drop unused levels from the output factor (logical)}
 
 \item{case}{Option to normalize case (`'asis'`` leaves it as it was)
-before attempting to match to `lookuptable`. One value 
+before attempting to match to `lookuptable`. One value
 only}
 
-\item{mapnato}{If the original levels contain `NA`s, what they should 
+\item{mapnato}{If the original levels contain `NA`s, what they should
 be instead. They stay `NA` by default.}
 
 \item{remove}{Vector of strings to remove from all level names (can
@@ -62,14 +62,14 @@ convenience in projects that use such a table. If you
 aren't working on a project that already follows this
 convention, you should ignore this parameter.}
 
-\item{var}{What value should be in the `varname` column of 
+\item{var}{What value should be in the `varname` column of
 `spec_mapper`}
 
-\item{fromto}{Which columns in the `spec_mapper` should become the 
+\item{fromto}{Which columns in the `spec_mapper` should become the
 `from` and `to` columns, respectively. Vector of length
 2, is `c('code','label')` by default.}
 }
 \description{
-A function to re-order and/or rename the levels of a factor or 
+A function to re-order and/or rename the levels of a factor or
 vector with optional cleanup.
 }

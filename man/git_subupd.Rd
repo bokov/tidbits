@@ -8,7 +8,7 @@ git_subupd(stopfile = ".developer")
 }
 \arguments{
 \item{stopfile}{The name of a file which, if exists, will cause this function
-to exit without doing anything. Will silently return errors 
+to exit without doing anything. Will silently return errors
 from shell but will not throw an error.}
 }
 \value{

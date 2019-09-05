@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions.R
 \name{vec2m}
 \alias{vec2m}
-\title{Stack a vector to form a matrix with repeating rows, with optional 
+\title{Stack a vector to form a matrix with repeating rows, with optional
 column names and transformation}
 \usage{
 vec2m(vv, nr = 1, trans = identity)
@@ -12,7 +12,7 @@ vec2m(vv, nr = 1, trans = identity)
 
 \item{nr}{Number of (identical) rows this matrix will contain}
 
-\item{trans}{An optional function that can take a matrix as its 
+\item{trans}{An optional function that can take a matrix as its
 sole argument. Useful functions include `as.data.frame()`
 `as_tibble()` and `as.table()`}
 }
@@ -21,7 +21,7 @@ A matrix, unless the function specified in the `trans` argument
         causes the output to be something else.
 }
 \description{
-Stack a vector to form a matrix with repeating rows, with optional 
+Stack a vector to form a matrix with repeating rows, with optional
 column names and transformation
 }
 \examples{

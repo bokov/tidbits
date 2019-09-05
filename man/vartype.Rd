@@ -3,13 +3,13 @@
 \name{vartype}
 \alias{vartype}
 \title{Returns a vector of column names that contain data elements of a particular type
-as specified by the user: "integer","POSIXct" "POSIXt", "numeric", "character", 
+as specified by the user: "integer","POSIXct" "POSIXt", "numeric", "character",
 "factor" and "logical".}
 \usage{
 vartype(dat, ctype)
 }
 \description{
 Returns a vector of column names that contain data elements of a particular type
-as specified by the user: "integer","POSIXct" "POSIXt", "numeric", "character", 
+as specified by the user: "integer","POSIXct" "POSIXt", "numeric", "character",
 "factor" and "logical".
 }
