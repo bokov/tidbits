@@ -200,20 +200,17 @@ getParentDots <- function(xx,call=sys.call(-1),fun=sys.function(-1)){ # revdeps:
 
 # Credit: http://conjugateprior.org/2015/06/identifying-the-os-from-r/
 get_os <- function(){ # nodeps
-  sysinf <- Sys.info()
+  sysinf <- Sys.info();
   if (!is.null(sysinf)){
-    os <- sysinf['sysname']
-    if (os == 'Darwin')
-      os <- "osx"
+    os <- sysinf['sysname'];
+    if (os == 'Darwin') os <- "osx";
   } else { ## mystery machine
-    os <- .Platform$OS.type
-    if (grepl("^darwin", R.version$os))
-      os <- "osx"
-    if (grepl("linux-gnu", R.version$os))
-      os <- "linux"
+    os <- .Platform$OS.type;
+    if (grepl("^darwin", R.version$os)) os <- "osx";
+    if (grepl("linux-gnu", R.version$os)) os <- "linux";
   }
-  tolower(os)
-}
+  tolower(os);
+};
 
 
 systemwrapper <- function(cmd='',...,VERBOSE=getOption('sysverbose',T)
@@ -233,8 +230,10 @@ systemwrapper <- function(cmd='',...,VERBOSE=getOption('sysverbose',T)
   return(do.call(system,c(command=cmd,sysargs)));
 }
 # git ----
+#' git checkout
 git_checkout <- function(which=getOption('git.workingbranch','master'),...){
   systemwrapper('git checkout',which,...)};
+
 gco <- git_checkout;
 
 git_commit <- function(files='-a',comment
@@ -245,12 +244,26 @@ git_commit <- function(files='-a',comment
   comment <- paste0('"',filenames,comment,'"');
   systemwrapper('git commit',files,'-m',comment,...);
   if(autopush) git_push();}
+
 gci <- git_commit;
 
-# List the files in the repo having a particular status
+#' List the files in the repo having a particular status
+#'
+#' Quoting from git documentation (\code{git help diff}):
+#' \emph{Select only files that are Added (A), Copied (C), Deleted (D),
+#' Modified (M), Renamed (R), have their type (i.e. regular file, symlink,
+#' submodule, ...) changed (T), are Unmerged (U), are Unknown (X), or have had
+#' their pairing Broken (B). Any combination of the filter characters (including
+#' none) can be used. When * (All-or-none) is added to the combination, all
+#' paths are selected if there is any file that matches other criteria in the
+#' comparison; if there is no file that matches other criteria, nothing is
+#' selected.}
+#'
+#' @param xx String containing one or more of A,C,D,M,R,T,U,X,B, or *
 git_diff_filter <- function(xx) {
   system(paste('git diff --name-only --diff-filter',xx),intern=T)};
 
+#' Nicely formatted and concise status of current git repo.
 git_status <- function(print=T
                        ,diff_filters=list(Added='A',Copied='C',Deleted='D'
                                           ,Modified='M',Renamed='R'
@@ -280,22 +293,33 @@ git_status <- function(print=T
   }
 gst <- git_status;
 
+#' List only the files currently being tracked by git
 git_lsfiles <- function(...) {systemwrapper('git ls-files',...)};
 
+#' Whatever other git functions that aren't explicitly implemented yet. Just put
+#' any combination of git arguments as arguments to this function, leaving out
+#' \code{git} itself.
 git_other <- function(...){systemwrapper('git',...)};
 git_ <- git_other;
 
+#' Make the specified file start getting tracked by the current git repository.
 git_add <- function(files,...){
   systemwrapper('git add',files=files,...)};
 gadd <- git_add;
 
+#' Rename a git file, so git knows you didn't delete it.
 git_rename <- function(from,to,...){systemwrapper('git rename',from,to,...)};
 
+#' Move a git file, so git knows you didn't delete it.
 git_move <- function(from,to,...) {systemwrapper('git mv',from,to,...)};
 
+#' Push committed changes to the origin (for example, but not necessarily,
+#' github.com)
 git_push <- function(...) {systemwrapper('git push',...)};
 gp <- git_push;
 
+#' Create a new branch \emph{and} check it out immediately. Optionally also
+#' push.
 git_newbranch <- function(branch,pushorigin=F,...){
   systemwrapper('git checkout -b',branch,...);
   if(pushorigin) systemwrapper('git push origin',branch);
@@ -330,6 +354,8 @@ git_subupd <- function(stopfile='.developer'){if(!file.exists(stopfile)){
     message('Developer mode-- ignoring.'); return(0);
   }};
 
+#' Automatically configure your global .gitconfig with your name and email
+#' (if not yet thus configured) so that git will allow you to commit changes
 git_autoconf <- function(upstream=getOption('git.upstream'),...){
   # should only be run in an interactive context
   if(!'upstream' %in% system('git remote',intern=T) && !is.null(upstream)){
@@ -352,6 +378,7 @@ git_autoconf <- function(upstream=getOption('git.upstream'),...){
 # set mergestrategy to 'ours' to resolve conflicts in favor of local changes
 # Or set it to '' to do whatever the default action is.
 # The ... args get passed to the merge command
+#' WIP
 git_getupstream <- function(mergestrategy='theirs'
                             ,message='Merge with upstream'
                             ,fastfwd=getOption('git.fastfwd',F)
@@ -411,6 +438,7 @@ git_ignore <- function(patterns,ignorepath='.',preamble='') {
 #'
 #' @return Invisibly returns `0` or an error code.
 #'
+#' @export
 #' @examples
 #' \dontrun{
 #' # Convert from https://github.com/... to git@github.com:...
