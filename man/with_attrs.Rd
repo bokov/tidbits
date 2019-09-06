@@ -24,9 +24,9 @@ Append or replace attributes of any object in a pipeline-frindly way.
 with_attrs(iris,list(class='list'))
 
 # Create a new attribute for an object
-foo <- with_attr(LETTERS,list(comment='Hello world'))
+foo <- with_attrs(LETTERS,list(comment='Hello world'))
 comment(foo)
-foo <- with_attr(foo,rep='One more comment.')
+foo <- with_attrs(foo,rep='One more comment.')
 comment(foo)
 
 }
