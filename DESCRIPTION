@@ -7,11 +7,12 @@ Depends: R (>= 3.4.4)
 Imports: 
   data.table,
   dplyr,
+  haven,
+  knitr,
   magrittr,
   methods,
   readr,
   readxl,
-  haven,
   tibble,
   devtools
 Enhances:
