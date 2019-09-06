@@ -475,7 +475,7 @@ autoread <- function(file,na=c('','.','(null)','NULL','NA')
   # allow file_args to be overridden by ... args, while preserving
   # order of ...
   for(ii in intersect(names(args),names(file_args))) file_args[[ii]] <- NULL;
-  xlformat <- readxl:::format_from_signature(file);
+  xlformat <- readxl::format_from_signature(file);
   args <- c(file_args,args);
   reader <- if(!is.na(xlformat)) paste0('read_',xlformat) else 'auto';
   if(reader == 'auto' && nrow(enc<-readr::guess_encoding(file))>0){
