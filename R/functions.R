@@ -87,13 +87,13 @@ cm <- with_cm <- function(xx,comment=NULL,append=T # deps:with_attrs
 }
 
 
-getCall.list <- getCall.data.frame <- getCall.gg <- function(xx) {attr(xx,'call')};
+getCall.list <- getCall.data.frame <- getCall.gg <- function(x,...) {attr(x,'call')};
 
 # why not update calls?
-update.call <- function(xx,...){
+update.call <- function(object,...){
   dots <- list(...);
-  for(ii in names(dots)) xx[[ii]] <- dots[[ii]];
-  xx;
+  for(ii in names(dots)) object[[ii]] <- dots[[ii]];
+  object;
 }
 
 #' Stack a vector to form a matrix with repeating rows, with optional
@@ -695,7 +695,8 @@ find_relpath <- function(file,paths=c('..','../..','.'),recursive=F
 }
 
 load_deps <- function(deps,scriptdir=getwd(),cachedir=scriptdir
-                      ,fallbackdir='scripts',envir=parent.frame()){
+                      ,fallbackdir='scripts',envir=parent.frame()
+                      ,loadfn=if(exists('tload')) tload else load ){
   if(length(deps)==0||identical(deps,'')){message('No dependencies.');return();}
   # what objects got loaded by this function
   loadedobj=c();
@@ -723,7 +724,7 @@ load_deps <- function(deps,scriptdir=getwd(),cachedir=scriptdir
       stop(sprintf('The cached file for %s could not be found',iiscript));
       # otherwise, the cached .rdata now exists one way or another, load it
     } else {
-      loadedobj <- union(loadedobj,tload(iicached,envir=envir));
+      loadedobj <- union(loadedobj,loadfn(iicached,envir=envir));
       message(sprintf('Loaded data for %s from %s',ii,iicached));
       };
   }
