@@ -675,7 +675,7 @@ autoread <- function(file,na=c('','.','(null)','NULL','NA')
   xlformat <- readxl:::format_from_signature(file);
   args <- c(file_args,args);
   reader <- if(!is.na(xlformat)) paste0('read_',xlformat) else 'auto';
-  if(reader == 'auto' && nrow(enc<-guess_encoding(file))>0){
+  if(reader == 'auto' && nrow(enc<-readr::guess_encoding(file))>0){
     # if it's a zip file, this unzips it and replaces the original file arg
     # with the temporary unzipped version
     unzfile <- suppressWarnings(unzip(file,exdir = tempfile("autoread")));
