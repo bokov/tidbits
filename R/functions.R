@@ -1,5 +1,9 @@
 # small utils ------------------------------------------------------------------
 
+#' @importFrom magrittr %>%
+#' @export
+magrittr::`%>%`
+
 
 #' This function takes a list of package names, loads them if they are
 #' available, otherwise attempts to install each one and then again
