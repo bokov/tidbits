@@ -14,7 +14,7 @@ you will have to edit .gitignore manually.}
 \item{ignorepath}{Path to .gitignore (you can have multiple ones)
 current directory by default.}
 
-\item{preamble}{What to put in the line/s before a set of ignore 
+\item{preamble}{What to put in the line/s before a set of ignore
 patterns. Empty line by default, set to NULL if you
 want to not skip a line.}
 }

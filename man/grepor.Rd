@@ -3,7 +3,7 @@
 \name{grepor}
 \alias{grepor}
 \title{Take a data.frame or character vector and a vector of grep targets and return
-the values that match (for data.frame, column names that match). If no 
+the values that match (for data.frame, column names that match). If no
 patterns given just returns the names}
 \usage{
 grepor(xx, patterns = ".")
@@ -15,6 +15,6 @@ grepor(xx, patterns = ".")
 }
 \description{
 Take a data.frame or character vector and a vector of grep targets and return
-the values that match (for data.frame, column names that match). If no 
+the values that match (for data.frame, column names that match). If no
 patterns given just returns the names
 }

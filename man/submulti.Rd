@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions.R
 \name{submulti}
 \alias{submulti}
-\title{Take a character vector and perform multiple search-replace 
+\title{Take a character vector and perform multiple search-replace
 operations on it.}
 \usage{
 submulti(xx, searchrep, method = c("partial", "full", "exact", "starts",
@@ -16,6 +16,6 @@ submulti(xx, searchrep, method = c("partial", "full", "exact", "starts",
 \item{method}{One of 'partial','full', or 'exact'. Controls whether to replace only the matching regexp, replace the entire value that contains a matching regexp, or replace the entire value if it's an exact match.}
 }
 \description{
-Take a character vector and perform multiple search-replace 
+Take a character vector and perform multiple search-replace
 operations on it.
 }

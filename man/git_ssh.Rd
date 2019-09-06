@@ -8,10 +8,10 @@ git_ssh(tossh = TRUE, sshstr = "git@github.com:",
   sslstr = "https://github.com/")
 }
 \arguments{
-\item{tossh}{If `TRUE`, will attempt to convert the remote.origin.url from 
+\item{tossh}{If `TRUE`, will attempt to convert the remote.origin.url from
 https to ssh. Default: `TRUE`}
 
-\item{sshstr}{A string to use as the prefix for ssh connection. Optional, 
+\item{sshstr}{A string to use as the prefix for ssh connection. Optional,
 defaults to the values used by github.com}
 
 \item{sslstr}{A string to use as the prefix for the ssl connection. Optional,
@@ -22,7 +22,7 @@ Invisibly returns `0` or an error code.
 }
 \description{
 A use-case for this is some environments that by default initialize projects
-as ssl/https (e.g. RStudio Cloud) but some users may prefer ssh 
+as ssl/https (e.g. RStudio Cloud) but some users may prefer ssh
 authentication. This easily converts between the two settings without having
 to remember the whole git command. Will silently return errors from shell but
 will not throw an error.
