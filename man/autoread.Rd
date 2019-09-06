@@ -5,7 +5,7 @@
 \title{Autoguessing function for reading most common data formats}
 \usage{
 autoread(file, na = c("", ".", "(null)", "NULL", "NA"),
-  fixnames = function(xx) {     setNames(xx,
+  fixnames = function(xx) {     stats::setNames(xx,
   tolower(make.names(names(xx)))) }, file_args = list(), ...)
 }
 \description{
