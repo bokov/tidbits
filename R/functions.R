@@ -462,12 +462,36 @@ t_autoread <- function(file,...){ #deps: getTryMsg
 
 
 #' Autoguessing function for reading most common data formats
+#' 
+#' Supported so far are: xls, xlsx, csv and most other delimited text formats,
+#' SPSS, Stata, and SAS. 
 #'
+#' @param file       The name of a file you want to read into R
+#' @param na         Vector of strings that should get translated to `NA` upon 
+#'                   import. Optional, defaults to a reasonable set of values.
+#' @param fixnames   A function that normalizes column names after importing the
+#'                   data. If you want to leave them untouched, set this equal
+#'                   to `identity()`. Optional, defaults to making them lower
+#'                   case, R-legal, and unique.
+#' @param file_args  This is to easily pass project-level or script-level
+#'                   defaults in the form of an `alist()` to whichever lucky 
+#'                   function ends up winning the contest to read your file. 
+#'                   Only names that match the formal arguments of your function
+#'                   will be used, the rest will be silently ignored. This way,
+#'                   you can pass some `read_xlsx` specific arguments without 
+#'                   worrying that something else will intercept them and error
+#'                   out.
+#' @param ...        Additional named arguments passed to this function will 
+#'                   be added to those in `file_args` overriding any that have 
+#'                   matching names.
+#' 
+#' @return A `tibble`
 #' @importFrom readxl read_xls read_xlsx excel_sheets
+#' 
 autoread <- function(file,na=c('','.','(null)','NULL','NA')
                      # change this to identity to do nothing to names
                      ,fixnames=function(xx) {
-                       stats::setNames(xx,tolower(make.names(names(xx))))}
+                       stats::setNames(xx,tolower(make.names(names(xx),unique = TRUE)))}
                      ,file_args=list(),...){
   if(!file.exists(file)) stop(sprintf('File "%s" not found.'),file);
   if(dir.exists(file)) stop(sprintf('"%s" is not a file, it\'s a directory.'),file);
@@ -525,12 +549,6 @@ autoread <- function(file,na=c('','.','(null)','NULL','NA')
     # check for Excel formats
     message('checking sheets in workbook');
     sheets <- readxl::excel_sheets(file);
-    # sheets <- try(.Call('readxl_xlsx_sheets',PACKAGE='readxl',file),silent=T);
-    # if(!is(sheets,'try-error')) reader <- 'read_xlsx' else{
-    #   sheets <- try(.Call('readxl_xls_sheets',PACKAGE='readxl',file),silent=T);
-    #   if(!is(sheets,'try-error')) reader <- 'read_xls';
-    # }
-    #xlreader <- get(reader,envir=as.environment('package:readxl'));
     if(length(sheets)>1 && !'sheet' %in% names(args)){
       warning(
         "\nMultiple sheets found:\n",paste(sheets,collapse=', ')
@@ -539,20 +557,8 @@ autoread <- function(file,na=c('','.','(null)','NULL','NA')
     xlargs <- args[intersect(names(args)
                              ,names(formals(eval(as.name(reader)))))];
     xlargs$na <- na;
-    # if(!'n_max' %in% names(xlargs)) xlargs$n_max <- Inf;
-    # if(!'skip' %in% names(xlargs)) xlargs$skip <- 0;
-    # n_max_orig <- xlargs$n_max; skip_orig <- xlargs$skip;
-    # xlargs$n_max <- chunk;
     message('About to read Excel file');
-    #out <- rowsread <- do.call(reader,c(list(path=file),xlargs));
     out <- do.call(reader,c(list(path=file),xlargs));
-    # while(nrow(rowsread)>0 && nrow(out) < n_max_orig){
-    #   xlargs$skip <- xlargs$skip + chunk;
-    #   #browser();
-    #   rowsread <- do.call(reader,c(list(path=file,col_names=colnames(out)),xlargs));
-    #   out <- rbind(out,rowsread);
-    #   message('Read ',nrow(out),' rows');
-    # }
     message('Fixing column names on Excel file');
     out <- fixnames(out);
     return(out)};
@@ -561,7 +567,7 @@ autoread <- function(file,na=c('','.','(null)','NULL','NA')
   # one of these has some error message that bubbles through despite silent=T
   # so we sink before the for loop, unsink if one of the readers succeeds...
   sink(tempfile());
-  for(ff in c(haven::read_sav,haven::read_por,haven::read_dta
+  for(ff in c(haven::read_sav,haven::read_por,haven::read_dta,haven::read_sas
               ,haven::read_xpt)){
       {
         if(!methods::is(try(out <- ff(file),silent=T),'try-error')){
@@ -730,3 +736,46 @@ load_deps <- function(deps,scriptdir=getwd(),cachedir=scriptdir
   }
   return(loadedobj);
 }
+
+
+#' Search for all sample datasets in all currently installed packages.
+#'
+#' A goal of this function is to be able to quickly filter through currently
+#' available datasets and find ones that meet your needs so you're not using
+#' the same old `mtcars` and `iris` for everything.
+#'
+#' @return A `data.frame` with columns `Package`: name of the package that 
+#'         provides that dataset, `LibPath`: path where that package is 
+#'         currently installed, `Item`: the name of the dataset, `Title`: a
+#'         brief description of the dataset, `Class`: the class of the object
+#'         listed in `Item` (if multiple classes, they are delimited by 
+#'         semicolons),`IsDataFrame`: whether or not the object listed in 
+#'         `Item` inherits from `data.frame`,`NumberNonNumeric`: number of
+#'         columns that are not `numeric` (`character`, `factor`, `POSIXct`, 
+#'         etc.),`Rows`: number of rows in the `Item` if applicable,`Cols`: 
+#'         number of columns in the dataset in the `Item` if applicable.
+#' @export
+#'
+#' @examples allTheData()
+allTheData <- function(verbose=T){
+  # get all datasets provided by all loaded packages
+  dt = as.data.frame(data(package = .packages(all.available = TRUE))$results
+                     ,stringsAsFactors=F);
+  # df = data.frame?, nnn = number not numeric, nr/nc = nrows, ncols
+  dt[,c('Class','IsDataFrame','NumberNonNumeric','Rows','Cols')] <- NA;
+  for(ii in unique(dt$Package)){
+    for(jj in subset(dt,Package==ii)$Item) {
+      path <- paste0(ii,'::',jj);
+      rows <- dt$Item==jj & dt$Package == ii;
+      oo <- try(eval(parse(text=path)),silent=T);
+      if(verbose) message(path);
+      if(!is(oo,'try-error')){
+        dt[rows,'class'] <- paste0(class(oo),collapse=';'); 
+        if(dt[rows,'df'] <- is(oo,'data.frame')){
+          dt[rows,'nnn'] <- ncol(oo) - sum(sapply(oo,is.numeric))};
+        dt[rows,c('nr','nc')]<-c(c(nrow(oo),NA)[1]
+                                                       ,c(ncol(oo),NA)[1]);}
+    };
+  return(dt);
+}
+
