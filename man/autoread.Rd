@@ -6,8 +6,37 @@
 \usage{
 autoread(file, na = c("", ".", "(null)", "NULL", "NA"),
   fixnames = function(xx) {     stats::setNames(xx,
-  tolower(make.names(names(xx)))) }, file_args = list(), ...)
+  tolower(make.names(names(xx), unique = TRUE))) }, file_args = list(),
+  ...)
+}
+\arguments{
+\item{file}{The name of a file you want to read into R}
+
+\item{na}{Vector of strings that should get translated to `NA` upon
+import. Optional, defaults to a reasonable set of values.}
+
+\item{fixnames}{A function that normalizes column names after importing the
+data. If you want to leave them untouched, set this equal
+to `identity()`. Optional, defaults to making them lower
+case, R-legal, and unique.}
+
+\item{file_args}{This is to easily pass project-level or script-level
+defaults in the form of an `alist()` to whichever lucky
+function ends up winning the contest to read your file.
+Only names that match the formal arguments of your function
+will be used, the rest will be silently ignored. This way,
+you can pass some `read_xlsx` specific arguments without
+worrying that something else will intercept them and error
+out.}
+
+\item{...}{Additional named arguments passed to this function will
+be added to those in `file_args` overriding any that have
+matching names.}
+}
+\value{
+A `tibble`
 }
 \description{
-Autoguessing function for reading most common data formats
+Supported so far are: xls, xlsx, csv and most other delimited text formats,
+SPSS, Stata, and SAS.
 }
