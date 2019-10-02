@@ -24,6 +24,7 @@ LazyData: true
 RoxygenNote: 6.1.0.9000
 Author: Alex Bokov [aut, cre]
 Maintainer: Alex Bokov <alex.bokov@gmail.com>
-Suggests: 
-  rmarkdown
+Suggests:
+  rmarkdown,
+    covr
 VignetteBuilder: knitr
