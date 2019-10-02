@@ -37,6 +37,8 @@ dct0 <- tblinfo(dat00)
 ```
 
 [![Travis-CI Build
-Status](https://travis-ci.org/bokov/tidbits.svg?branch=master)](https://travis-ci.org/bokov/tidbits)
+Status](https://travis-ci.org/bokov/tidbits.svg?branch=integration)](https://travis-ci.org/bokov/tidbits)
 [![Coverage
-Status](https://img.shields.io/codecov/c/github/bokov/tidbits/master.svg)](https://codecov.io/github/bokov/tidbits?branch=integration)
+Status](https://img.shields.io/codecov/c/github/bokov/tidbits/integration.svg)](https://codecov.io/github/bokov/tidbits?branch=integration)
+[![AppVeyor Build
+Status](https://ci.appveyor.com/api/projects/status/github/bokov/tidbits?branch=integration&svg=true)](https://ci.appveyor.com/project/bokov/tidbits)
