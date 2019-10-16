@@ -6,8 +6,13 @@
 available, otherwise attempts to install each one and then again
 attempts to load it.}
 \usage{
-instrequire(pkgs, quietly = TRUE, dependencies = TRUE,
-  repos = getOption("repos", "https://cran.rstudio.com/"), ...)
+instrequire(
+  pkgs,
+  quietly = TRUE,
+  dependencies = TRUE,
+  repos = getOption("repos", "https://cran.rstudio.com/"),
+  ...
+)
 }
 \description{
 This function takes a list of package names, loads them if they are

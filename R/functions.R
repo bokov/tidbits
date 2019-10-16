@@ -2,6 +2,7 @@
 
 #' @importFrom magrittr %>%
 #' @export
+#' @noRd
 magrittr::`%>%`
 
 
@@ -46,7 +47,7 @@ clean_slate <- function(command="",removepatt='^\\.RData$|*.R\\.rdata$' # deps:g
   # also global environment if specified
   if(cleanglobal) rm(list=ls(all.names=all,envir=.GlobalEnv),envir = .GlobalEnv);
   # if rstudioapi available, use it to restart the session
-  if(require(rstudioapi) && rstudioapi::isAvailable()){
+  if(requireNamespace('rstudioapi') && rstudioapi::isAvailable()){
     rstudioapi::restartSession(command)};
 }
 
@@ -445,32 +446,53 @@ grepor <- function(xx,patterns='.') {
 # table utilities -----------------------------------
 
 #' Extends trailR package with integrated universal (almost) file reader
-#' 
+#'
 #' @param file Any of the common delimited file formats
-#' 
+#'
 #' @export
 t_autoread <- function(file,...){ #deps: getTryMsg
   # make sure prerequisite function exists
-  if(!exists('tread')) {
-    .result <- try({
-      devtools::install_github('bokov/trailR',ref='integration');
-      library(trailR)});
-    if(methods::is(.result,'try-error')) return(getTryMsg(.result));
-  }
-  do.call(tread,c(list(file,readfun=autoread),list(...)));
-}
+  if(requireNamespace('trailR')){
+    do.call(trailR::tread,c(list(file,readfun=autoread),list(...)))} else {
+      stop("The 't_autoread()' only works if the trailR package is installed")
+    }};
 
 
 #' Autoguessing function for reading most common data formats
 #'
+#' Supported so far are: xls, xlsx, csv and most other delimited text formats,
+#' SPSS, Stata, and SAS.
+#'
+#' @param file       The name of a file you want to read into R
+#' @param na         Vector of strings that should get translated to `NA` upon
+#'                   import. Optional, defaults to a reasonable set of values.
+#' @param fixnames   A function that normalizes column names after importing the
+#'                   data. If you want to leave them untouched, set this equal
+#'                   to `identity()`. Optional, defaults to making them lower
+#'                   case, R-legal, and unique.
+#' @param file_args  This is to easily pass project-level or script-level
+#'                   defaults in the form of an `alist()` to whichever lucky
+#'                   function ends up winning the contest to read your file.
+#'                   Only names that match the formal arguments of your function
+#'                   will be used, the rest will be silently ignored. This way,
+#'                   you can pass some `read_xlsx` specific arguments without
+#'                   worrying that something else will intercept them and error
+#'                   out.
+#' @param ...        Additional named arguments passed to this function will
+#'                   be added to those in `file_args` overriding any that have
+#'                   matching names.
+#'
+#' @return A `tibble`
 #' @importFrom readxl read_xls read_xlsx excel_sheets
 autoread <- function(file,na=c('','.','(null)','NULL','NA')
                      # change this to identity to do nothing to names
                      ,fixnames=function(xx) {
-                       stats::setNames(xx,tolower(make.names(names(xx))))}
+                       stats::setNames(xx,tolower(make.names(names(xx),unique = TRUE)))}
                      ,file_args=list(),...){
-  if(!file.exists(file)) stop(sprintf('File "%s" not found.'),file);
-  if(dir.exists(file)) stop(sprintf('"%s" is not a file, it\'s a directory.'),file);
+  if(!RCurl::url.exists(file)){
+    if(!file.exists(file)) stop(sprintf('File "%s" not found.'),file);
+    if(dir.exists(file)) stop(sprintf('"%s" is not a file, it\'s a directory.')
+                              ,file)};
   args <- list(...);
   # allow file_args to be overridden by ... args, while preserving
   # order of ...
@@ -525,12 +547,6 @@ autoread <- function(file,na=c('','.','(null)','NULL','NA')
     # check for Excel formats
     message('checking sheets in workbook');
     sheets <- readxl::excel_sheets(file);
-    # sheets <- try(.Call('readxl_xlsx_sheets',PACKAGE='readxl',file),silent=T);
-    # if(!is(sheets,'try-error')) reader <- 'read_xlsx' else{
-    #   sheets <- try(.Call('readxl_xls_sheets',PACKAGE='readxl',file),silent=T);
-    #   if(!is(sheets,'try-error')) reader <- 'read_xls';
-    # }
-    #xlreader <- get(reader,envir=as.environment('package:readxl'));
     if(length(sheets)>1 && !'sheet' %in% names(args)){
       warning(
         "\nMultiple sheets found:\n",paste(sheets,collapse=', ')
@@ -539,20 +555,8 @@ autoread <- function(file,na=c('','.','(null)','NULL','NA')
     xlargs <- args[intersect(names(args)
                              ,names(formals(eval(as.name(reader)))))];
     xlargs$na <- na;
-    # if(!'n_max' %in% names(xlargs)) xlargs$n_max <- Inf;
-    # if(!'skip' %in% names(xlargs)) xlargs$skip <- 0;
-    # n_max_orig <- xlargs$n_max; skip_orig <- xlargs$skip;
-    # xlargs$n_max <- chunk;
     message('About to read Excel file');
-    #out <- rowsread <- do.call(reader,c(list(path=file),xlargs));
     out <- do.call(reader,c(list(path=file),xlargs));
-    # while(nrow(rowsread)>0 && nrow(out) < n_max_orig){
-    #   xlargs$skip <- xlargs$skip + chunk;
-    #   #browser();
-    #   rowsread <- do.call(reader,c(list(path=file,col_names=colnames(out)),xlargs));
-    #   out <- rbind(out,rowsread);
-    #   message('Read ',nrow(out),' rows');
-    # }
     message('Fixing column names on Excel file');
     out <- fixnames(out);
     return(out)};
@@ -561,7 +565,7 @@ autoread <- function(file,na=c('','.','(null)','NULL','NA')
   # one of these has some error message that bubbles through despite silent=T
   # so we sink before the for loop, unsink if one of the readers succeeds...
   sink(tempfile());
-  for(ff in c(haven::read_sav,haven::read_por,haven::read_dta
+  for(ff in c(haven::read_sav,haven::read_por,haven::read_dta,haven::read_sas
               ,haven::read_xpt)){
       {
         if(!methods::is(try(out <- ff(file),silent=T),'try-error')){
@@ -600,17 +604,29 @@ colinfo <- function(col,custom_stats=alist(),...){
   out;
   }
 
+#' Create an automated data dictionary
+#'
+#' @param dat          An object that inherits from `data.frame`
+#' @param custom_stats An `alist` of statistics to calculate on each
+#'                     column of `dat` in addition to the defaults
+#'                     in `info_cols` (below). Optional.
+#' @param info_cols    Another `alist`, this one has default values but
+#'                     can be overridden on an all-or-none basis.
+#' @param ...          Eats any extra arguments, to keep them from
+#'                     causing trouble.
+#'
+#' @return A data-frame having one row for each column in `dat`
+#' @export
+#'
+#' @examples
+#'
+#' tblinfo(datasets::iris)
+#'
 tblinfo <- function(dat,custom_stats=alist()
                     # some handy column groupers
                     ,info_cols=alist(
                        c_empty=frc_missing==1,c_uninformative=n_nonmissing<2
                       ,c_ordinal=uniquevals<10&isnum
-                      # The below is an experiment with automatically adding
-                      # explanatory labels to columns. Problem is, it's
-                      # invisible to pander() and in View() is creates wide
-                      # columns that get truncated anyway
-                      # ,c_ordinal=with_attrs(uniquevals<10&isnum
-                      #                       ,list(label=strwrap('Is this a numeric column that is candidate for converting to discrete values?',prefix='\n')))
                       ,c_tm=uniquevals==1&n_missing>0
                       ,c_tf=uniquevals==2,c_numeric=isnum&!c_ordinal
                       ,c_factor=uniquevals<20&!isnum
@@ -622,6 +638,68 @@ tblinfo <- function(dat,custom_stats=alist()
   dots <- getParentDots();
   for(ii in names(dots)) out[[ii]] <- eval(dots[[ii]],envir=out);
   class(out)<-c('dtdict',class(out));
+  return(out);
+}
+
+
+#' Returns a list of column names from the data dictionary for which the column
+#' named in the first argument is true. The first arg can be either a string or
+#' a name. The second must be a data.frame
+#'
+#' @param var        Either a string or a name, of a column in `dictionary`
+#' @param dat        An optional data.frame, to constrain which rows of the
+#'                   'dictionary' object get used
+#' @param retcol     Which column to return-- by default the same as used for 'matchcol'
+#' @param dictionary A 'data.frame' that is used as a data dictionary. It must at
+#'                   minimum contain a column of column-names for the dataset for
+#'                   which it is a data dictionary ('matchcol') and one or more
+#'                   columns each representing a _group_ of columns in the dataset,
+#'                   such that a TRUE or T value means the column whose name is
+#'                   the value of 'matchcol' is the name of a column in the data
+#'                   that belongs to the group defined by the grouping column.
+#'                   These grouping columns are what the argument 'var' is
+#'                   supposed to refer to. We will use the convention that grouping
+#'                   column names begin with 'c_' but this convention is not
+#'                   (currently) enforced programmatically.
+#'
+#' @examples
+#'
+#' dct0 <- tblinfo(mtcars);
+#'
+#' v();
+#'
+#' # Numeric variables in mtcars that behave like discrete variables
+#' v(c_ordinal);
+#' # Numeric variables in mtcars
+#' v(c_numeric);
+#' # Variables in mtcars that only have two values, so could be encoded as
+#' # boolean
+#' v(c_tf);
+#'
+#' # Non-default data dictionary
+#' dct1 <- tblinfo(state.x77)
+#' v(c_ordinal,dict=dct1)
+#' v(c_factor,dict=dct1)
+#' v(c_tf,dict=dct1)
+#' v(c_numeric,dict=dct1)
+#'
+#' @export
+v <- function(var,dat
+              ,retcol=getOption('tb.retcol','column')
+              ,dictionary=get('dct0')
+              ,asname=F) {
+  # convenience function: if forgot what column names are available, call with
+  # no arguments and they will be listed
+  if(missing(var)) return(names(dictionary));
+  # support both standard or non-standard evaluation
+  var<-as.character(substitute(var));
+  # TODO: Think about what to do when nothing matches... not necessarily an error
+  #       condition, might just be something to warn about and move on.
+  out <- unique(as.vector(na.omit(unlist(dictionary[dictionary[[var]],retcol]))));
+  if(!is(try(cnames<-colnames(dat),silent = T),'try-error')&&length(cnames)>0) {
+    out <- out[out%in%cnames];}
+  if(asname) out <- lapply(out,as.name);
+  #return(unname(out));
   return(out);
 }
 
@@ -730,3 +808,47 @@ load_deps <- function(deps,scriptdir=getwd(),cachedir=scriptdir
   }
   return(loadedobj);
 }
+
+
+#' Search for all sample datasets in all currently installed packages.
+#'
+#' A goal of this function is to be able to quickly filter through currently
+#' available datasets and find ones that meet your needs so you're not using
+#' the same old `mtcars` and `iris` for everything.
+#'
+#' @return A `data.frame` with columns `Package`: name of the package that
+#'         provides that dataset, `LibPath`: path where that package is
+#'         currently installed, `Item`: the name of the dataset, `Title`: a
+#'         brief description of the dataset, `Class`: the class of the object
+#'         listed in `Item` (if multiple classes, they are delimited by
+#'         semicolons),`IsDataFrame`: whether or not the object listed in
+#'         `Item` inherits from `data.frame`,`NumberNonNumeric`: number of
+#'         columns that are not `numeric` (`character`, `factor`, `POSIXct`,
+#'         etc.),`Rows`: number of rows in the `Item` if applicable,`Cols`:
+#'         number of columns in the dataset in the `Item` if applicable.
+#' @export
+#'
+#' @examples \dontrun{ allTheData() }
+allTheData <- function(verbose=T){
+  # get all datasets provided by all loaded packages
+  dt = as.data.frame(utils::data(package = .packages(all.available = TRUE))$results
+                     ,stringsAsFactors=F);
+  # df = data.frame?, nnn = number not numeric, nr/nc = nrows, ncols
+  dt[,c('Class','IsDataFrame','NumberNonNumeric','Rows','Cols')] <- NA;
+  for(ii in unique(dt$Package)){
+    for(jj in subset(dt,Package==ii)$Item) {
+      path <- paste0(ii,'::',jj);
+      rows <- dt$Item==jj & dt$Package == ii;
+      oo <- try(eval(parse(text=path)),silent=T);
+      if(verbose) message(path);
+      if(!is(oo,'try-error')){
+        dt[rows,'Class'] <- paste0(class(oo),collapse=';');
+        if(dt[rows,'IsDataFrame'] <- is(oo,'data.frame')){
+          dt[rows,'NumberNotNumeric'] <- ncol(oo) -
+            sum(sapply(oo,is.numeric))};
+        dt[rows,c('Rows','Cols')]<-c(c(nrow(oo),NA)[1]
+                                     ,c(ncol(oo),NA)[1]);}
+    }};
+  return(dt);
+};
+

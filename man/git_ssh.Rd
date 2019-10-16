@@ -4,8 +4,11 @@
 \alias{git_ssh}
 \title{Switch between ssh authentication and ssl authentication for a git repo.}
 \usage{
-git_ssh(tossh = TRUE, sshstr = "git@github.com:",
-  sslstr = "https://github.com/")
+git_ssh(
+  tossh = TRUE,
+  sshstr = "git@github.com:",
+  sslstr = "https://github.com/"
+)
 }
 \arguments{
 \item{tossh}{If `TRUE`, will attempt to convert the remote.origin.url from

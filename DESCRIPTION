@@ -4,7 +4,7 @@ Version: 0.0.0.9000
 Authors@R: person("Alex", "Bokov", email = "alex.bokov@gmail.com", role = c("aut", "cre"))
 Description: These are various utilities I wrote to streamline my own work and to help the students in my Introduction to Data Science class at UTHealth San Antonio. Hopefully some of them will be useful to others as well.
 Depends: R (>= 3.4.4)
-Imports: 
+Imports:
   data.table,
   dplyr,
   haven,
@@ -13,6 +13,7 @@ Imports:
   methods,
   readr,
   readxl,
+  RCurl,
   tibble,
   devtools
 Enhances:
@@ -20,6 +21,15 @@ Enhances:
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.0.9000
+RoxygenNote: 6.1.99.9001
 Author: Alex Bokov [aut, cre]
 Maintainer: Alex Bokov <alex.bokov@gmail.com>
+Suggests:
+  GGally,
+  pander,
+  rmarkdown,
+    covr,
+    testthat
+VignetteBuilder: knitr
+URL: https://github.com/bokov/tidbits
+BugReports: https://github.com/bokov/tidbits/issues
