@@ -41,6 +41,24 @@ dat00 <- autoread('https://www.naaccr.org/wp-content/uploads/2017/02/naaccr_cina
 dct0 <- tblinfo(dat00)
 
 ```
+Now that there exists a data.frame compatible object named `dct0` in your environment, you can pull various 
+collections of column names out of it for the table on which it was based (`dat00`).
+```{r varnames}
+# To see which column groupings exist, call it without any arguments
+v()
+# To get the names of just the numeric columns 
+v(c_numeric)
+# To get the names of uninformative columns (i.e. their value never changes)
+v(c_uninformative)
+# Complex columns aren't literally complex numbers, but rather factors that have a huge number of levels
+v(c_complex)
+# Ordinal columns are ones that are numeric, yet have few distinct values and it might make sense to discretize them
+v(c_ordinal)
+# 'c_factor' columns are non-numeric ones that might be good choices for converting to factors
+v(c_factor)
+# the 'c_tm' group are columns which have only one distinct non-missing value, 'c_tf' ones have only two distinct non-missing values, and 'c_empty' ones are missing all values. None of those are represented in the NAACCR dataset.
+
+```
 
 [![Travis-CI Build Status](https://travis-ci.org/bokov/tidbits.svg?branch=integration)](https://travis-ci.org/bokov/tidbits)
 [![Coverage Status](https://img.shields.io/codecov/c/github/bokov/tidbits/integration.svg)](https://codecov.io/github/bokov/tidbits?branch=integration)
