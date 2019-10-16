@@ -442,19 +442,22 @@ grepor <- function(xx,patterns='.') {
 
 
 
-# table utilities -----------------------------------
+# table utilities ----
 
 #' Extends trailR package with integrated universal (almost) file reader
 #'
 #' @param file Any of the common delimited file formats
+#' @param ... Arguments passed to `tread()`
 #'
-#' @importFrom trailR tread
+#' @return Whatever object the underlying read function passed to `tread()`
+#'         will output, usually a class that inherits from `data.frame`
+#'
 #' @export
 t_autoread <- function(file,...){ #deps: getTryMsg
   # make sure prerequisite function exists
   if(requireNamespace('trailR')){
-    do.call(trailR::tread,c(list(file,readfun=autoread),list(...)))} else {
-      stop("The 't_autoread()' only works if the trailR package is installed")
+    do.call(tread,c(list(file,readfun=autoread),list(...)))} else {
+      stop("The 't_autoread()' function only works if the trailR package is installed")
     }};
 
 
@@ -814,7 +817,9 @@ load_deps <- function(deps,scriptdir=getwd(),cachedir=scriptdir
 #'
 #' A goal of this function is to be able to quickly filter through currently
 #' available datasets and find ones that meet your needs so you're not using
-#' the same old `mtcars` and `iris` for everything.
+#' the same old `mtcars` and `iris` for everything. Warning, though: this
+#' takes a long time to gather information about every single dataset registered
+#' to every single library currently installed.
 #'
 #' @return A `data.frame` with columns `Package`: name of the package that
 #'         provides that dataset, `LibPath`: path where that package is
@@ -826,13 +831,16 @@ load_deps <- function(deps,scriptdir=getwd(),cachedir=scriptdir
 #'         columns that are not `numeric` (`character`, `factor`, `POSIXct`,
 #'         etc.),`Rows`: number of rows in the `Item` if applicable,`Cols`:
 #'         number of columns in the dataset in the `Item` if applicable.
+#'
+#' @param verbose If set to `TRUE` (default) prints the library and dataset
+#'                name to the console as it reads each one.
 #' @export
 #'
 #' @examples \dontrun{ allTheData() }
-allTheData <- function(verbose=T){
+allTheData <- function(verbose=TRUE){
   # get all datasets provided by all loaded packages
   dt = as.data.frame(utils::data(package = .packages(all.available = TRUE))$results
-                     ,stringsAsFactors=F);
+                     ,stringsAsFactors=FALSE);
   # df = data.frame?, nnn = number not numeric, nr/nc = nrows, ncols
   dt[,c('Class','IsDataFrame','NumberNonNumeric','Rows','Cols')] <- NA;
   for(ii in unique(dt$Package)){

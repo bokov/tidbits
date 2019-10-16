@@ -8,6 +8,12 @@ t_autoread(file, ...)
 }
 \arguments{
 \item{file}{Any of the common delimited file formats}
+
+\item{...}{Arguments passed to `tread()`}
+}
+\value{
+Whatever object the underlying read function passed to `tread()`
+        will output, usually a class that inherits from `data.frame`
 }
 \description{
 Extends trailR package with integrated universal (almost) file reader

@@ -4,7 +4,11 @@
 \alias{allTheData}
 \title{Search for all sample datasets in all currently installed packages.}
 \usage{
-allTheData(verbose = T)
+allTheData(verbose = TRUE)
+}
+\arguments{
+\item{verbose}{If set to `TRUE` (default) prints the library and dataset
+name to the console as it reads each one.}
 }
 \value{
 A `data.frame` with columns `Package`: name of the package that
@@ -21,7 +25,9 @@ A `data.frame` with columns `Package`: name of the package that
 \description{
 A goal of this function is to be able to quickly filter through currently
 available datasets and find ones that meet your needs so you're not using
-the same old `mtcars` and `iris` for everything.
+the same old `mtcars` and `iris` for everything. Warning, though: this
+takes a long time to gather information about every single dataset registered
+to every single library currently installed.
 }
 \examples{
 \dontrun{ allTheData() }
