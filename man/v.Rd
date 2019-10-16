@@ -54,7 +54,7 @@ v(c_numeric);
 v(c_tf);
 
 # Non-default data dictionary
-library(survival)
+library(state.x77)
 dct1 <- tblinfo(flchain)
 v(c_ordinal,dict=dct1)
 v(c_factor,dict=dct1)
