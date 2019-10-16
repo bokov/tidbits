@@ -448,6 +448,7 @@ grepor <- function(xx,patterns='.') {
 #'
 #' @param file Any of the common delimited file formats
 #'
+#' @importFrom trailR tread
 #' @export
 t_autoread <- function(file,...){ #deps: getTryMsg
   # make sure prerequisite function exists
