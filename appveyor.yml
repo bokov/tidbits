@@ -12,8 +12,30 @@ install:
 
 cache:
   - C:\RLibrary
+environment:
+  global:
+    # WARNINGS_ARE_ERRORS: 1
+    USE_RTOOLS: true
 
-# Adapt as necessary starting from here
+  matrix:
+  - R_VERSION: release
+    R_ARCH: x64
+
+  - R_VERSION: oldrel
+    RTOOLS_VERSION: 33
+    CRAN: http://cran.rstudio.com
+
+  - R_VERSION: devel
+    R_ARCH: x64
+    PKGTYPE: source
+    GCC_PATH: mingw_64
+
+  - R_VERSION: devel
+    PKGTYPE: source
+    GCC_PATH: mingw_32
+
+matrix:
+  fast_finish: true
 
 build_script:
   - travis-tool.sh install_deps
