@@ -2,7 +2,6 @@
 
 #' @importFrom magrittr %>%
 #' @export
-#' @noRd
 magrittr::`%>%`
 
 
