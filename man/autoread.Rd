@@ -4,10 +4,14 @@
 \alias{autoread}
 \title{Autoguessing function for reading most common data formats}
 \usage{
-autoread(file, na = c("", ".", "(null)", "NULL", "NA"),
-  fixnames = function(xx) {     stats::setNames(xx,
-  tolower(make.names(names(xx), unique = TRUE))) }, file_args = list(),
-  ...)
+autoread(
+  file,
+  na = c("", ".", "(null)", "NULL", "NA"),
+  fixnames = function(xx) {     stats::setNames(xx, tolower(make.names(names(xx), unique
+    = TRUE))) },
+  file_args = list(),
+  ...
+)
 }
 \arguments{
 \item{file}{The name of a file you want to read into R}

@@ -4,9 +4,12 @@
 \alias{git_status}
 \title{Nicely formatted and concise status of current git repo.}
 \usage{
-git_status(print = T, diff_filters = list(Added = "A", Copied = "C",
-  Deleted = "D", Modified = "M", Renamed = "R", ChangedType = "T", Unmerged
-  = "U", Unknown = "X", Broken = "B"), ...)
+git_status(
+  print = T,
+  diff_filters = list(Added = "A", Copied = "C", Deleted = "D", Modified = "M", Renamed
+    = "R", ChangedType = "T", Unmerged = "U", Unknown = "X", Broken = "B"),
+  ...
+)
 }
 \description{
 Nicely formatted and concise status of current git repo.

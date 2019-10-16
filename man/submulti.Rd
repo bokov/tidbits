@@ -5,8 +5,11 @@
 \title{Take a character vector and perform multiple search-replace
 operations on it.}
 \usage{
-submulti(xx, searchrep, method = c("partial", "full", "exact", "starts",
-  "ends", "startsends"))
+submulti(
+  xx,
+  searchrep,
+  method = c("partial", "full", "exact", "starts", "ends", "startsends")
+)
 }
 \arguments{
 \item{xx}{A \code{vector} of type \code{character} (required)}

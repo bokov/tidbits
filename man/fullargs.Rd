@@ -5,8 +5,7 @@
 \title{returns call with ALL arguments specified, both the defaults and those
 explicitly provided by the user}
 \usage{
-fullargs(syspar = sys.parent(), env = parent.frame(2L),
-  expand.dots = TRUE)
+fullargs(syspar = sys.parent(), env = parent.frame(2L), expand.dots = TRUE)
 }
 \description{
 returns call with ALL arguments specified, both the defaults and those

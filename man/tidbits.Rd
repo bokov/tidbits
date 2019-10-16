@@ -3,7 +3,6 @@
 \docType{package}
 \name{tidbits}
 \alias{tidbits}
-\alias{tidbits-package}
 \title{tidbits.}
 \description{
 Various functions to streamline tasks that are repetitive and/or require
