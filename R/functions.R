@@ -677,8 +677,7 @@ tblinfo <- function(dat,custom_stats=alist()
 #' v(c_tf);
 #'
 #' # Non-default data dictionary
-#' library(survival)
-#' dct1 <- tblinfo(flchain)
+#' dct1 <- tblinfo(state.x77)
 #' v(c_ordinal,dict=dct1)
 #' v(c_factor,dict=dct1)
 #' v(c_tf,dict=dct1)
