@@ -43,7 +43,6 @@ Other git wrappers: \code{\link{git_add}()},
   \code{\link{git_checkout}()},
   \code{\link{git_diff_filter}()},
   \code{\link{git_move}()}, \code{\link{git_newbranch}()},
-  \code{\link{git_rename}()}, \code{\link{git_status}()},
-  \code{\link{git_subupd}()}
+  \code{\link{git_status}()}, \code{\link{git_subupd}()}
 }
 \concept{git wrappers}

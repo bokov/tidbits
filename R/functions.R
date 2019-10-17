@@ -368,13 +368,6 @@ gadd <- git_add;
 #' @inheritParams git
 #'
 #' @family git wrappers
-git_rename <- function(from,to,...){systemwrapper('git rename',from,to,...)};
-
-#' Move a file tracked by git, so git knows you did not delete it.
-#'
-#' @inheritParams git_rename
-#'
-#' @family git wrappers
 git_move <- function(from,to,...) {systemwrapper('git mv',from,to,...)};
 
 #' \code{git_push}: Push committed changes to the origin (for example, but not
