@@ -20,8 +20,10 @@ The object `xx` with modified attributes
 Append or replace attributes of any object in a pipeline-frindly way.
 }
 \examples{
-# Change an object's attribute
-with_attrs(iris,list(class='list'))
+# Change an object's existing attribute
+foo <- matrix(1:6,nrow=3)
+foo
+with_attrs(foo,list(dim=c(2,3)))
 
 # Create a new attribute for an object
 foo <- with_attrs(LETTERS,list(comment='Hello world'))

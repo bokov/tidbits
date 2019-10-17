@@ -77,8 +77,10 @@ clean_slate <- function(command="",removepatt='^\\.RData$|*.R\\.rdata$' # deps:g
 #' @export
 #'
 #' @examples
-#' # Change an object's attribute
-#' with_attrs(iris,list(class='list'))
+#' # Change an object's existing attribute
+#' foo <- matrix(1:6,nrow=3)
+#' foo
+#' with_attrs(foo,list(dim=c(2,3)))
 #'
 #' # Create a new attribute for an object
 #' foo <- with_attrs(LETTERS,list(comment='Hello world'))
