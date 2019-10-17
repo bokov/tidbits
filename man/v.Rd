@@ -75,6 +75,11 @@ dct0$printname <- toupper(dct0$column)
 v()
 v(c_numeric,retcol='printname')
 
+# You can also update the data dictionary with new column groupings.
+dct0$c_ordinal2 <- with(dct0,uniquevals <6)
+v()
+v(c_ordinal2)
+
 # Non-default data dictionary
 dct1 <- tblinfo(state.x77)
 v(c_ordinal,dict=dct1)
