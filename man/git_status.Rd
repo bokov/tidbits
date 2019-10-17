@@ -2,14 +2,30 @@
 % Please edit documentation in R/functions.R
 \name{git_status}
 \alias{git_status}
+\alias{gst}
 \title{Nicely formatted and concise status of current git repo.}
 \usage{
 git_status(
-  print = T,
+  print = TRUE,
   diff_filters = list(Added = "A", Copied = "C", Deleted = "D", Modified = "M", Renamed
     = "R", ChangedType = "T", Unmerged = "U", Unknown = "X", Broken = "B"),
   ...
 )
+
+gst(
+  print = TRUE,
+  diff_filters = list(Added = "A", Copied = "C", Deleted = "D", Modified = "M", Renamed
+    = "R", ChangedType = "T", Unmerged = "U", Unknown = "X", Broken = "B"),
+  ...
+)
+}
+\arguments{
+\item{print}{If \code{TRUE} (default) prints formatted results to
+console.}
+
+\item{diff_filters}{Which statuses to display (all of them, by default)}
+
+\item{...}{Passed to the underlying \code{git} shell command.}
 }
 \description{
 Nicely formatted and concise status of current git repo.

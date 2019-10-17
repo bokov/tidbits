@@ -2,9 +2,17 @@
 % Please edit documentation in R/functions.R
 \name{git_checkout}
 \alias{git_checkout}
+\alias{gco}
 \title{git checkout}
 \usage{
 git_checkout(which = getOption("git.workingbranch", "master"), ...)
+
+gco(which = getOption("git.workingbranch", "master"), ...)
+}
+\arguments{
+\item{which}{The branch you wish to check out from the current repo.}
+
+\item{...}{Passed to the \code{git} shell command.}
 }
 \description{
 git checkout

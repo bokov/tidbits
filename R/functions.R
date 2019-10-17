@@ -194,9 +194,13 @@ NULL
 
 #'
 #' git checkout
+#'
+#' @param which The branch you wish to check out from the current repo.
+#' @param ...   Passed to the \code{git} shell command.
 git_checkout <- function(which=getOption('git.workingbranch','master'),...){
   systemwrapper('git checkout',which,...)};
 
+#' @rdname git_checkout
 gco <- git_checkout;
 
 git_commit <- function(files='-a',comment
@@ -224,10 +228,15 @@ gci <- git_commit;
 #'
 #' @param xx String containing one or more of A,C,D,M,R,T,U,X,B, or *
 git_diff_filter <- function(xx) {
-  system(paste('git diff --name-only --diff-filter',xx),intern=T)};
+  system(paste('git diff --name-only --diff-filter',xx),intern=TRUE)};
 
 #' Nicely formatted and concise status of current git repo.
-git_status <- function(print=T
+#'
+#' @param print        If \code{TRUE} (default) prints formatted results to
+#'                     console.
+#' @param diff_filters Which statuses to display (all of them, by default)
+#' @param ...          Passed to the underlying \code{git} shell command.
+git_status <- function(print=TRUE
                        ,diff_filters=list(Added='A',Copied='C',Deleted='D'
                                           ,Modified='M',Renamed='R'
                                           ,ChangedType='T',Unmerged='U'
@@ -253,27 +262,33 @@ git_status <- function(print=T
     }
   invisible(list(branch=branch,tracking=tracking,commits=commits
                  ,diffs=diffs));
-  }
+}
+
+#' @rdname git_status
 gst <- git_status;
 
-#' List only the files currently being tracked by git
+#' \code{git_lsfiles}: List only the files currently being tracked by git
 #'
 #' @rdname git
 git_lsfiles <- function(...) {systemwrapper('git ls-files',...)};
 
-#' Whatever other git functions that aren't explicitly implemented yet. Just put
-#' any combination of git arguments as arguments to this function, leaving out
-#' \code{git} itself.
+#' \code{git_other},\code{git_}: Whatever other git functions that aren't
+#'                               explicitly implemented yet. Just put any
+#'                               combination of git arguments as arguments to
+#'                               this function, leaving out \code{git} itself.
 #'
 #' @rdname git
 git_other <- function(...){systemwrapper('git',...)};
+#' @rdname git
 git_ <- git_other;
 
 #' Make the specified file start getting tracked by the current git repository.
 #'
-#' @rdname git
+#' @param files Character vector of file names.
+#' @param ...   Passed to the underlying \code{git} shell command.
 git_add <- function(files,...){
   systemwrapper('git add',files=files,...)};
+#' @rdname git_add
 gadd <- git_add;
 
 #' Rename a git file, so git knows you didn't delete it.
@@ -282,8 +297,10 @@ git_rename <- function(from,to,...){systemwrapper('git rename',from,to,...)};
 #' Move a git file, so git knows you didn't delete it.
 git_move <- function(from,to,...) {systemwrapper('git mv',from,to,...)};
 
-#' Push committed changes to the origin (for example, but not necessarily,
-#' github.com)
+#' \code{git_push}: Push committed changes to the origin (for example, but not
+#' necessarily, github.com)
+#'
+#' @rdname git
 git_push <- function(...) {systemwrapper('git push',...)};
 gp <- git_push;
 
