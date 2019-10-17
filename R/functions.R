@@ -699,6 +699,11 @@ tblinfo <- function(dat,custom_stats=alist()
 #' v()
 #' v(c_numeric,retcol='printname')
 #'
+#' # You can also update the data dictionary with new column groupings.
+#' dct0$c_ordinal2 <- with(dct0,uniquevals <6)
+#' v()
+#' v(c_ordinal2)
+#'
 #' # Non-default data dictionary
 #' dct1 <- tblinfo(state.x77)
 #' v(c_ordinal,dict=dct1)
@@ -718,7 +723,8 @@ v <- function(var,dat
   var<-as.character(substitute(var));
   # TODO: Think about what to do when nothing matches... not necessarily an error
   #       condition, might just be something to warn about and move on.
-  out <- unique(as.vector(na.omit(unlist(dictionary[dictionary[[var]],retcol]))));
+  out <- unique(as.vector(stats::na.omit(unlist(dictionary[dictionary[[var]]
+                                                           ,retcol]))));
   if(!is(try(cnames<-colnames(dat),silent = T),'try-error')&&length(cnames)>0) {
     out <- out[out%in%cnames];}
   if(asname) out <- lapply(out,as.name);
@@ -727,7 +733,7 @@ v <- function(var,dat
 }
 
 
-# string hacking ---------------------------------------------------------------
+# string hacking ----
 
 # Project Utilities ----
 personalizeTemplate <- function(file,title='TITLE',author='AUTHOR'
@@ -864,7 +870,7 @@ allTheData <- function(verbose=TRUE){
   # df = data.frame?, nnn = number not numeric, nr/nc = nrows, ncols
   dt[,c('Class','IsDataFrame','NumberNonNumeric','Rows','Cols')] <- NA;
   for(ii in unique(dt$Package)){
-    for(jj in subset(dt,Package==ii)$Item) {
+    for(jj in dt[dt$Package==ii,'Item']) {
       path <- paste0(ii,'::',jj);
       rows <- dt$Item==jj & dt$Package == ii;
       oo <- try(eval(parse(text=path)),silent=T);
