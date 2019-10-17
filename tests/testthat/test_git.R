@@ -26,8 +26,11 @@ test_that("git",{
   expect_true(file.exists('testfile00.txt'));
   expect_silent(git_other('rm -f testfile00.txt',VERBOSE=FALSE));
   expect_false(file.exists('testfile00.txt'));
-  expect_match(git_checkout(origstate$branch,'2>&1',VERBOSE=FALSE,intern=TRUE)
-                 ,'Switched to branch',all=FALSE);
+  git_checkout(origstate$branch,'2>&1',VERBOSE=FALSE,intern=TRUE);
+  expect_equal(git_status(print=FALSE,VERBOSE=FALSE)$branch,origstate$branch);
   expect_match(git_other('branch -D foo 2>&1',VERBOSE=FALSE,intern=TRUE)
                ,'Deleted branch foo',all=FALSE);
 })
+
+rm(origstate);
+c()
