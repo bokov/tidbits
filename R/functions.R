@@ -269,7 +269,7 @@ gco <- git_checkout;
 
 git_commit <- function(files='-a',comment
                        ,autopush=getOption('git.autopush',T),...){
-  .changed<-git_status(VERBOSE=F,intern=T);
+  #.changed<-git_status(VERBOSE=FALSE,intern=TRUE);
   filenames <- if(!missing(files)){
     paste0(paste(files,collapse=','),': ')} else 'multi: ';
   comment <- paste0('"',filenames,comment,'"');
@@ -310,12 +310,24 @@ git_status <- function(print=TRUE
                                           ,ChangedType='T',Unmerged='U'
                                           ,Unknown='X',Broken='B')
                        ,...){
-  branch <- system('git rev-parse --abbrev-ref HEAD',intern=T);
-  tracking <- system('git rev-parse --abbrev-ref --symbolic-full-name @{u}'
-                     ,intern=T);
+  branch <- systemwrapper('git rev-parse --abbrev-ref HEAD',...,intern=TRUE);
+  if(branch != 'HEAD' &&
+     # this part checks that this branch is being remotely tracked
+     suppressWarnings(length(systemwrapper('git config --get'
+                                           ,paste0('branch.',branch
+                                                   ,'.merge')
+                                           ,...,intern=TRUE))>0)){
+    # if remotely tracked, record upstream branch
+    tracking <- systemwrapper('git rev-parse --abbrev-ref'
+                              ,'--symbolic name @{u}',...,intern=TRUE);
+  } else tracking <- c(); # otherwise set it to a placeholder
+  # if detached head, get the hash instead of the branch name
+  if(branch == 'HEAD') branch <- systemwrapper('git rev-parse HEAD'
+                                               ,...,intern=TRUE);
   commits <- if(length(tracking)==0) character(0) else {
-    system(paste('git log',paste0(tracking,'..',branch),'--oneline')
-           ,intern=T)};
+    # if being tracked, get more info
+    systemwrapper('git log',paste0(tracking,'..',branch),'--oneline'
+                  ,...,intern=TRUE)};
   diffs <- lapply(diff_filters,git_diff_filter);
   if(print){
     message('Branch: ',branch);
@@ -386,9 +398,10 @@ gp <- git_push;
 #' @inheritParams git
 #'
 #' @family git wrappers
-git_newbranch <- function(branch,pushorigin=FALSE,...){
+git_newbranch <- function(branch,...,pushorigin=FALSE){
   systemwrapper('git checkout -b',branch,...);
-  if(pushorigin) systemwrapper('git push origin --set-upstream',branch);
+  if(pushorigin) systemwrapper('git push origin --set-upstream',branch
+                               ,...);
 }
 #' @rdname git_newbranch
 gbr <- git_newbranch;
