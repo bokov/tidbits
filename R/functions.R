@@ -321,8 +321,9 @@ git_status <- function(print=TRUE
                                                    ,'.merge')
                                            ,...,intern=TRUE))>0)){
     # if remotely tracked, record upstream branch
-    tracking <- tail(systemwrapper('git rev-parse --abbrev-ref'
-                              ,'--symbolic-name @{u}',...,intern=TRUE),1);
+    tracking <- utils::tail(systemwrapper('git rev-parse --abbrev-ref'
+                                          ,'--symbolic-name @{u}'
+                                          ,...,intern=TRUE),1);
   } else tracking <- c(); # otherwise set it to a placeholder
   # if detached head, get the hash instead of the branch name
   if(branch == 'HEAD') branch <- systemwrapper('git rev-parse HEAD'

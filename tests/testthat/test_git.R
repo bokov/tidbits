@@ -4,6 +4,7 @@ test_that("git",{
   skip_if_not(file.exists('.git')||file.exists(file.path('..','.git'))||
                 file.exists(file.path('..','..','.git'))||
                 file.exists(file.path('..','..','..','.git')));
+  expect_identical(gst,git_status);
   expect_is(origstate <-gst(VERBOSE=FALSE,print=FALSE),'list');
   expect_gt(length(origstate$branch),0);
   expect_silent(git_newbranch('foo',VERBOSE=FALSE));
@@ -11,7 +12,6 @@ test_that("git",{
   write('hello world','testfile.txt');
   expect_message(git_add('testfile.txt'),'git add testfile.txt'
                  ,'testfile.txt now being tracked on branch foo');
-  #
   expect_silent(git_commit('testfile.txt','testing file commit'
                             ,autopush = FALSE,VERBOSE=FALSE));
   expect_true('testfile.txt' %in% git_lsfiles('test*.txt',intern=TRUE
