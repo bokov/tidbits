@@ -3,11 +3,35 @@
 \name{git_autoconf}
 \alias{git_autoconf}
 \title{Automatically configure your global .gitconfig with your name and email
-(if not yet thus configured) so that git will allow you to commit changes}
+(if not already configured) so that git will allow you to commit changes.
+If run from a script this function will not do anything other than set the
+upstream repository if applicable.}
 \usage{
 git_autoconf(upstream = getOption("git.upstream"), ...)
 }
+\arguments{
+\item{upstream}{The upstream repository to add. Can also be specified via
+\code{options('git.upstream')} which will become this
+argument's default value. If there is already an upstream
+repository configured, it will be left as-is.}
+
+\item{...}{Passed to the \code{git} shell command via \code{system}.}
+}
 \description{
 Automatically configure your global .gitconfig with your name and email
-(if not yet thus configured) so that git will allow you to commit changes
+(if not already configured) so that git will allow you to commit changes.
+If run from a script this function will not do anything other than set the
+upstream repository if applicable.
 }
+\examples{
+git_autoconf()
+}
+\seealso{
+Other git wrappers: \code{\link{git_add}()},
+  \code{\link{git_checkout}()},
+  \code{\link{git_diff_filter}()},
+  \code{\link{git_move}()}, \code{\link{git_newbranch}()},
+  \code{\link{git_rename}()}, \code{\link{git_status}()},
+  \code{\link{git_subupd}()}, \code{\link{git}}
+}
+\concept{git wrappers}

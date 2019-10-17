@@ -2,9 +2,7 @@
 % Please edit documentation in R/functions.R
 \name{instrequire}
 \alias{instrequire}
-\title{This function takes a list of package names, loads them if they are
-available, otherwise attempts to install each one and then again
-attempts to load it.}
+\title{try to install and load each of a list of packages}
 \usage{
 instrequire(
   pkgs,
@@ -14,8 +12,28 @@ instrequire(
   ...
 )
 }
+\arguments{
+\item{pkgs}{character vector of package names that are needed, e.g.
+by a script that uses this command.}
+
+\item{quietly}{passed to \code{\link[base]{require}}}
+
+\item{dependencies}{whether to also install dependencies, passed to
+\code{\link[utils]{install.packages}}}
+
+\item{repos}{passed to \code{\link[utils]{install.packages}} to
+specify which repositories to use (optional).}
+
+\item{...}{passed to \code{\link[utils]{install.packages}} to
+specify any additional options needed (e.g. local urls
+and such).}
+}
 \description{
 This function takes a list of package names, loads them if they are
 available, otherwise attempts to install each one and then again
-attempts to load it.
+attempts to load it. Will produce an error if any packages in \code{pkgs}
+are not possible to install and load.
+}
+\examples{
+instrequire(c('readr','readxl','tibble'))
 }

@@ -6,6 +6,40 @@
 \usage{
 colinfo(col, custom_stats = alist(), ...)
 }
+\arguments{
+\item{col}{A vector of any type.}
+
+\item{custom_stats}{An \code{alist} of unevaluated calls or similar objects
+that will be evaluated in the scope described in the
+details section.}
+
+\item{...}{Additional named expressions that will also be evaluated
+in the scope described below but after the
+\code{custom_stats} expressions have been evaluated, so
+they can use any objects they have created.}
+}
+\value{
+A list with the objects described in details, in addition to objects
+       having the same names as those in \code{custom_stats} and \code{...}
+       and the values those of the corresponding expressions.
+}
 \description{
-Sumarize a table column
+The following summary statistics are calculated on \code{col}:
+\tabular{rr}{
+\code{class} \tab a colon-delimited string with all the classes that
+             \code{col} belongs to \cr
+\code{uniquevals} \tab number of unique non-missing values \cr
+\code{isnum} \tab whether or not \code{col} is numeric (logical)\cr
+\code{frc_int} \tab the fraction of non-missing values in \code{col} that are
+                    integers\cr
+\code{n_nonmissing} \tab the number of non-missing values in \code{col}\cr
+\code{n_missing} \tab the number of missing values in \code{col}\cr
+\code{frc_missing} \tab the fraction of missing values in \code{col}\cr
+\code{n_nonrepeat} \tab the number of values that occur only once in
+                   \code{col}\cr
+\code{frc_nonrepeat} \tab the fraction of values in \code{col} that do not
+                     repeat\cr
+\code{top3} \tab the top three most commonly occurring values in \code{col}
+                 as a semicolon-delimited string
+}
 }

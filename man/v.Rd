@@ -88,3 +88,6 @@ v(c_tf,dict=dct1)
 v(c_numeric,dict=dct1)
 
 }
+\seealso{
+tblinfo
+}

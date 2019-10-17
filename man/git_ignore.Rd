@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions.R
 \name{git_ignore}
 \alias{git_ignore}
-\title{Title: Add a pattern to a .gitignore file}
+\title{Add a pattern to a .gitignore file}
 \usage{
 git_ignore(patterns, ignorepath = ".", preamble = "")
 }
@@ -19,7 +19,7 @@ patterns. Empty line by default, set to NULL if you
 want to not skip a line.}
 }
 \description{
-Title: Add a pattern to a .gitignore file
+Add a pattern to a .gitignore file
 }
 \examples{
 git_ignore(c('*.csv','*.tsv'))

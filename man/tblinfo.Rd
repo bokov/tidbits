@@ -15,26 +15,33 @@ tblinfo(
 )
 }
 \arguments{
-\item{dat}{An object that inherits from `data.frame`}
+\item{dat}{An object that inherits from \code{data.frame}}
 
-\item{custom_stats}{An `alist` of statistics to calculate on each
-column of `dat` in addition to the defaults
-in `info_cols` (below). Optional.}
+\item{custom_stats}{An \code{alist} of statistics to calculate on each
+column of \code{dat} in addition to the defaults
+in \code{info_cols} (below). Optional.}
 
-\item{info_cols}{Another `alist`, this one has default values but
+\item{info_cols}{Another \code{alist}, this one has default values but
 can be overridden on an all-or-none basis.}
 
 \item{...}{Eats any extra arguments, to keep them from
 causing trouble.}
 }
 \value{
-A data-frame having one row for each column in `dat`
+A data-frame having one row for each column in \code{dat}
 }
 \description{
-Create an automated data dictionary
+The unevaluated expressions in \code{custom_stats} and \code{info_cols} use
+variables that exist during execution and are documented in
+\code{\link{colinfo}}
 }
 \examples{
 
 tblinfo(datasets::iris)
 
+}
+\seealso{
+v
+
+colinfo
 }

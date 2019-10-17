@@ -2,12 +2,33 @@
 % Please edit documentation in R/functions.R
 \name{git_newbranch}
 \alias{git_newbranch}
+\alias{gbr}
 \title{Create a new branch \emph{and} check it out immediately. Optionally also
 push.}
 \usage{
-git_newbranch(branch, pushorigin = F, ...)
+git_newbranch(branch, pushorigin = FALSE, ...)
+
+gbr(branch, pushorigin = FALSE, ...)
+}
+\arguments{
+\item{branch}{Name of the branch to create and immediately check out.}
+
+\item{pushorigin}{If \code{TRUE} will also push the new branch to the
+git repository with the \code{--set-upstream} option.}
+
+\item{...}{Passed to the \code{git} shell command via \code{system}.}
 }
 \description{
 Create a new branch \emph{and} check it out immediately. Optionally also
 push.
 }
+\seealso{
+Other git wrappers: \code{\link{git_add}()},
+  \code{\link{git_autoconf}()},
+  \code{\link{git_checkout}()},
+  \code{\link{git_diff_filter}()},
+  \code{\link{git_move}()}, \code{\link{git_rename}()},
+  \code{\link{git_status}()}, \code{\link{git_subupd}()},
+  \code{\link{git}}
+}
+\concept{git wrappers}

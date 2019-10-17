@@ -2,10 +2,27 @@
 % Please edit documentation in R/functions.R
 \name{git_move}
 \alias{git_move}
-\title{Move a git file, so git knows you didn't delete it.}
+\title{Move a file tracked by git, so git knows you did not delete it.}
 \usage{
 git_move(from, to, ...)
 }
-\description{
-Move a git file, so git knows you didn't delete it.
+\arguments{
+\item{from}{Current name/path of a file tracked by git.}
+
+\item{to}{New name/path of a file tracked by git.}
+
+\item{...}{Passed to the \code{git} shell command via \code{system}.}
 }
+\description{
+Move a file tracked by git, so git knows you did not delete it.
+}
+\seealso{
+Other git wrappers: \code{\link{git_add}()},
+  \code{\link{git_autoconf}()},
+  \code{\link{git_checkout}()},
+  \code{\link{git_diff_filter}()},
+  \code{\link{git_newbranch}()},
+  \code{\link{git_rename}()}, \code{\link{git_status}()},
+  \code{\link{git_subupd}()}, \code{\link{git}}
+}
+\concept{git wrappers}

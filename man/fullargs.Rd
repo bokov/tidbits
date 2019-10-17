@@ -5,9 +5,20 @@
 \title{returns call with ALL arguments specified, both the defaults and those
 explicitly provided by the user}
 \usage{
-fullargs(syspar = sys.parent(), env = parent.frame(2L), expand.dots = TRUE)
+fullargs(syspar = sys.parent(), env = parent.frame(syspar), expand.dots = TRUE)
+}
+\arguments{
+\item{syspar}{An positive integer, which indicates which function in the
+calling stack is the one whose arguments should be read}
+
+\item{env}{The environment from which to retrieve the \code{...}, if any.
+Passed to \code{\link[base]{match.call}}}
+
+\item{expand.dots}{Passed to \code{\link[base]{match.call}}. \code{TRUE} by
+default, set to \code{FALSE} to not include \code{...}}
 }
 \description{
-returns call with ALL arguments specified, both the defaults and those
-explicitly provided by the user
+Intended for programmers to include inside functions they write in order for
+their functions to be able to examine arguments further up the calling stack
+that would otherwise not be in scope.
 }

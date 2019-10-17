@@ -12,7 +12,9 @@ to exit without doing anything. Will silently return errors
 from shell but will not throw an error.}
 }
 \value{
-If successful, \code{0}, otherwise an error code.
+0 for successful execution unless \code{intern=TRUE} is part of \code{...} and if it is,
+        output from the shell will be returned rather than printed to the
+        screen for most commands.
 }
 \description{
 Delete and re-download git submodules if any exist.
@@ -20,4 +22,15 @@ Delete and re-download git submodules if any exist.
 \examples{
 
 \dontrun{ git_subupd() }
+
 }
+\seealso{
+Other git wrappers: \code{\link{git_add}()},
+  \code{\link{git_autoconf}()},
+  \code{\link{git_checkout}()},
+  \code{\link{git_diff_filter}()},
+  \code{\link{git_move}()}, \code{\link{git_newbranch}()},
+  \code{\link{git_rename}()}, \code{\link{git_status}()},
+  \code{\link{git}}
+}
+\concept{git wrappers}
