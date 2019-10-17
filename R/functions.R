@@ -652,7 +652,8 @@ tblinfo <- function(dat,custom_stats=alist()
 #' @param var        Either a string or a name, of a column in `dictionary`
 #' @param dat        An optional data.frame, to constrain which rows of the
 #'                   'dictionary' object get used
-#' @param retcol     Which column to return-- by default the same as used for 'matchcol'
+#' @param retcol     Which column to return-- by default the same as used for
+#'                   'matchcol'
 #' @param dictionary A 'data.frame' that is used as a data dictionary. It must at
 #'                   minimum contain a column of column-names for the dataset for
 #'                   which it is a data dictionary ('matchcol') and one or more
@@ -664,11 +665,17 @@ tblinfo <- function(dat,custom_stats=alist()
 #'                   supposed to refer to. We will use the convention that grouping
 #'                   column names begin with 'c_' but this convention is not
 #'                   (currently) enforced programmatically.
+#' @param asname     If set to `TRUE` will output a list of objects of type
+#'                   `name` rather than a vector of character strings.
+#'
+#' @return           Either a character vector (default) or a list of `name`
+#'                   objects.
 #'
 #' @examples
 #'
 #' dct0 <- tblinfo(mtcars);
 #'
+#' # see what columns exist in the current data dictionary
 #' v();
 #'
 #' # Numeric variables in mtcars that behave like discrete variables
@@ -678,6 +685,19 @@ tblinfo <- function(dat,custom_stats=alist()
 #' # Variables in mtcars that only have two values, so could be encoded as
 #' # boolean
 #' v(c_tf);
+#'
+#' # Return as names rather than characters
+#' v(c_ordinal,asname=TRUE)
+#'
+#' # Constrain to only columns that exist in a given dataset.
+#' mtsmall <- mtcars[,1:5]
+#' v(c_numeric,dat=mtsmall)
+#'
+#' # Supposing you had another version of the variable names, e.g. for display
+#' # purposes. You would access it via the 'retcol' argument.
+#' dct0$printname <- toupper(dct0$column)
+#' v()
+#' v(c_numeric,retcol='printname')
 #'
 #' # Non-default data dictionary
 #' dct1 <- tblinfo(state.x77)
@@ -690,7 +710,7 @@ tblinfo <- function(dat,custom_stats=alist()
 v <- function(var,dat
               ,retcol=getOption('tb.retcol','column')
               ,dictionary=get('dct0')
-              ,asname=F) {
+              ,asname=FALSE) {
   # convenience function: if forgot what column names are available, call with
   # no arguments and they will be listed
   if(missing(var)) return(names(dictionary));
