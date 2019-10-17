@@ -28,8 +28,8 @@ test_that("git",{
   expect_false(file.exists('testfile00.txt'));
   git_checkout(origstate$branch,'2>&1',VERBOSE=FALSE,intern=TRUE);
   expect_equal(git_status(print=FALSE,VERBOSE=FALSE)$branch,origstate$branch);
-  expect_match(git_other('branch -D foo 2>&1',VERBOSE=FALSE,intern=TRUE)
-               ,'Deleted branch foo',all=FALSE);
+  git_other('branch -D foo 2>&1',VERBOSE=FALSE,intern=TRUE);
+  expect_length(git_other('branch --list foo',VERBOSE=F,intern=T),0);
 })
 
 rm(origstate);
