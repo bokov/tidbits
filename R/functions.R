@@ -304,6 +304,7 @@ git_diff_filter <- function(xx) {
 #'                     console.
 #' @param diff_filters Which statuses to display (all of them, by default)
 #' @inheritParams git
+#' @param intern       Ignored
 #'
 #' @family git wrappers
 git_status <- function(print=TRUE
@@ -311,7 +312,7 @@ git_status <- function(print=TRUE
                                           ,Modified='M',Renamed='R'
                                           ,ChangedType='T',Unmerged='U'
                                           ,Unknown='X',Broken='B')
-                       ,...){
+                       ,...,intern=TRUE){
   branch <- systemwrapper('git rev-parse --abbrev-ref HEAD',...,intern=TRUE);
   if(branch != 'HEAD' &&
      # this part checks that this branch is being remotely tracked
@@ -320,8 +321,8 @@ git_status <- function(print=TRUE
                                                    ,'.merge')
                                            ,...,intern=TRUE))>0)){
     # if remotely tracked, record upstream branch
-    tracking <- systemwrapper('git rev-parse --abbrev-ref'
-                              ,'--symbolic name @{u}',...,intern=TRUE);
+    tracking <- tail(systemwrapper('git rev-parse --abbrev-ref'
+                              ,'--symbolic-name @{u}',...,intern=TRUE),1);
   } else tracking <- c(); # otherwise set it to a placeholder
   # if detached head, get the hash instead of the branch name
   if(branch == 'HEAD') branch <- systemwrapper('git rev-parse HEAD'
