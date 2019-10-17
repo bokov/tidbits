@@ -529,11 +529,14 @@ git_ssh <- function(tossh=TRUE,sshstr='git@github.com:'
 # renaming and remapping  ----
 
 
-#' Take a character vector and perform multiple search-replace
+#' takes a character vector and perform multiple search-replace
 #' operations on it.
 #' @param xx A \code{vector} of type \code{character} (required)
 #' @param searchrep A \code{matrix} with two columns of type \code{character} (required). The left column is the pattern and the right, the replacement.
 #' @param method One of 'partial','full', or 'exact'. Controls whether to replace only the matching regexp, replace the entire value that contains a matching regexp, or replace the entire value if it's an exact match.
+#'
+#' @examples submulti(letters,cbind(c('a','Q','v'),c('11','22','33')))
+#' @export
 submulti <- function(xx,searchrep
                      ,method=c('partial','full','exact'
                                ,'starts','ends','startsends')){
