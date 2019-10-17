@@ -1,6 +1,9 @@
 context("git wrappers");
 
 test_that("git",{
+  skip_if_not(file.exists('.git')||file.exists(file.path('..','.git'))||
+                file.exists(file.path('..','..','.git'))||
+                file.exists(file.path('..','..','..','.git')));
   expect_is(origstate <-gst(VERBOSE=FALSE,print=FALSE),'list');
   expect_gt(length(origstate$branch),0);
   expect_silent(git_newbranch('foo',VERBOSE=FALSE));
