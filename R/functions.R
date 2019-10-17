@@ -186,6 +186,13 @@ systemwrapper <- function(cmd='',...,VERBOSE=getOption('sysverbose',T)
   return(do.call(system,c(command=cmd,sysargs)));
 }
 # git ----
+#' Simple git wrappers
+#'
+#' @param ... Passed to the git shell command.
+#' @name git
+NULL
+
+#'
 #' git checkout
 git_checkout <- function(which=getOption('git.workingbranch','master'),...){
   systemwrapper('git checkout',which,...)};
@@ -250,15 +257,21 @@ git_status <- function(print=T
 gst <- git_status;
 
 #' List only the files currently being tracked by git
+#'
+#' @rdname git
 git_lsfiles <- function(...) {systemwrapper('git ls-files',...)};
 
 #' Whatever other git functions that aren't explicitly implemented yet. Just put
 #' any combination of git arguments as arguments to this function, leaving out
 #' \code{git} itself.
+#'
+#' @rdname git
 git_other <- function(...){systemwrapper('git',...)};
 git_ <- git_other;
 
 #' Make the specified file start getting tracked by the current git repository.
+#'
+#' @rdname git
 git_add <- function(files,...){
   systemwrapper('git add',files=files,...)};
 gadd <- git_add;
