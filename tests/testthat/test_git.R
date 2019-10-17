@@ -4,6 +4,12 @@ test_that("git",{
   skip_if_not(file.exists('.git')||file.exists(file.path('..','.git'))||
                 file.exists(file.path('..','..','.git'))||
                 file.exists(file.path('..','..','..','.git')));
+  git_other('config user.name masochist',VERBOSE=FALSE);
+  expect_identical(git_other('config user.name',VERBOSE=FALSE,intern=TRUE)
+                   ,'masochist');
+  git_other('config user.email masochist@loopback.org',VERBOSE=FALSE);
+  expect_identical(git_other('config user.email',VERBOSE=FALSE,intern=TRUE)
+                   ,'masochist@loopback.org');
   expect_identical(gst,git_status);
   expect_is(origstate <-gst(VERBOSE=FALSE,print=FALSE),'list');
   expect_gt(length(origstate$branch),0);
@@ -26,9 +32,9 @@ test_that("git",{
   expect_true(file.exists('testfile00.txt'));
   expect_silent(git_other('rm -f testfile00.txt',VERBOSE=FALSE));
   expect_false(file.exists('testfile00.txt'));
-  git_checkout(origstate$branch,'2>&1',VERBOSE=FALSE,intern=TRUE);
+  git_checkout(origstate$branch,VERBOSE=FALSE);
   expect_equal(git_status(print=FALSE,VERBOSE=FALSE)$branch,origstate$branch);
-  git_other('branch -D foo 2>&1',VERBOSE=FALSE,intern=TRUE);
+  git_other('branch -D foo',VERBOSE=FALSE);
   expect_length(git_other('branch --list foo',VERBOSE=F,intern=T),0);
 })
 
