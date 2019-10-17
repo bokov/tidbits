@@ -6,17 +6,17 @@
 \title{Create a new branch \emph{and} check it out immediately. Optionally also
 push.}
 \usage{
-git_newbranch(branch, pushorigin = FALSE, ...)
+git_newbranch(branch, ..., pushorigin = FALSE)
 
-gbr(branch, pushorigin = FALSE, ...)
+gbr(branch, ..., pushorigin = FALSE)
 }
 \arguments{
 \item{branch}{Name of the branch to create and immediately check out.}
 
+\item{...}{Passed to the \code{git} shell command via \code{system}.}
+
 \item{pushorigin}{If \code{TRUE} will also push the new branch to the
 git repository with the \code{--set-upstream} option.}
-
-\item{...}{Passed to the \code{git} shell command via \code{system}.}
 }
 \description{
 Create a new branch \emph{and} check it out immediately. Optionally also
