@@ -9,14 +9,16 @@ git_status(
   print = TRUE,
   diff_filters = list(Added = "A", Copied = "C", Deleted = "D", Modified = "M", Renamed
     = "R", ChangedType = "T", Unmerged = "U", Unknown = "X", Broken = "B"),
-  ...
+  ...,
+  intern = TRUE
 )
 
 gst(
   print = TRUE,
   diff_filters = list(Added = "A", Copied = "C", Deleted = "D", Modified = "M", Renamed
     = "R", ChangedType = "T", Unmerged = "U", Unknown = "X", Broken = "B"),
-  ...
+  ...,
+  intern = TRUE
 )
 }
 \arguments{
@@ -26,6 +28,8 @@ console.}
 \item{diff_filters}{Which statuses to display (all of them, by default)}
 
 \item{...}{Passed to the \code{git} shell command via \code{system}.}
+
+\item{intern}{Ignored}
 }
 \description{
 Nicely formatted and concise status of current git repo.
