@@ -81,10 +81,7 @@ v()
 v(c_ordinal2)
 
 # Non-default data dictionary
-dct1 <- tblinfo(state.x77)
-v(c_ordinal,dict=dct1)
-v(c_factor,dict=dct1)
-v(c_tf,dict=dct1)
+dct1 <- tblinfo(data.frame(state.x77))
 v(c_numeric,dict=dct1)
 
 }
