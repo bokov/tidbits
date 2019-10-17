@@ -5,9 +5,26 @@
 magrittr::`%>%`
 
 
+#' try to install and load each of a list of packages
+#'
 #' This function takes a list of package names, loads them if they are
 #' available, otherwise attempts to install each one and then again
-#' attempts to load it.
+#' attempts to load it. Will produce an error if any packages in \code{pkgs}
+#' are not possible to install and load.
+#'
+#' @param pkgs         character vector of package names that are needed, e.g.
+#'                     by a script that uses this command.
+#' @param quietly      passed to \code{\link[base]{require}}
+#' @param dependencies whether to also install dependencies, passed to
+#'                     \code{\link[utils]{install.packages}}
+#' @param repos        passed to \code{\link[utils]{install.packages}} to
+#'                     specify which repositories to use (optional).
+#' @param ...          passed to \code{\link[utils]{install.packages}} to
+#'                     specify any additional options needed (e.g. local urls
+#'                     and such).
+#'
+#' @examples instrequire(c('readr','readxl','tibble'))
+#' @export
 instrequire <- function(pkgs # nodeps
                         ,quietly=TRUE
                         # the dependencies argument is ignored and is only here
@@ -78,13 +95,43 @@ with_attrs<-function(xx,rep.attrs=list(),app.attrs=list()){ # nodeps
 }
 
 #' takes input and returns it with a comment attribute
-cm <- with_cm <- function(xx,comment=NULL,append=T # deps:with_attrs
-                          ,transf=stringr::str_squish){
+#'
+#' @param xx       Any R object
+#' @param comment  Comment to add to the object.
+#' @param append   If \code{TRUE} (default) appends comment to those that
+#'                 are already attached to the object, if any.
+#' @param transf   Function that takes one character vector argument and returns
+#'                 a character vector. By default it is
+#'                 \code{\link[stringr]{str_squish}} which removes extra whitespace.
+#'                 To bypass entirely set this argument to \code{NULL}.
+#'
+#' @return The same object passed as the first argument but with the added
+#'         comment.
+#'
+#' @examples
+#' data(iris)
+#' comment(iris)
+#' foo <- cm(iris,comment=' What  pretty ')
+#' comment(foo)
+#'
+#' foo <- cm(foo,comment='flowers!',transf=toupper)
+#' comment(foo)
+#'
+#' # This replaces the earlier comments due to append being FALSE now.
+#' foo <- cm(foo,'Hello world.',append=FALSE)
+#' comment(foo)
+#'
+#' @export
+with_cm <- function(xx,comment=NULL,append=TRUE,transf=stringr::str_squish){
   if(!is.null(transf)) comment <- transf(comment);
   if(append) with_attrs(xx,app.attrs=list(comment=comment)) else {
     with_attrs(xx,rep.attrs=list(comment=comment));
   }
 }
+
+#' @rdname with_cm
+#' @export
+cm <- with_cm
 
 
 getCall.list <- getCall.data.frame <- getCall.gg <- function(x,...) {attr(x,'call')};
@@ -119,7 +166,19 @@ vec2m <- function(vv,nr=1,trans=identity) {
 
 #' returns call with ALL arguments specified, both the defaults and those
 #' explicitly provided by the user
-fullargs <- function(syspar=sys.parent(),env=parent.frame(2L),expand.dots=TRUE){
+#'
+#' Intended for programmers to include inside functions they write in order for
+#' their functions to be able to examine arguments further up the calling stack
+#' that would otherwise not be in scope.
+#'
+#' @param syspar An positive integer, which indicates which function in the
+#'               calling stack is the one whose arguments should be read
+#' @param env    The environment from which to retrieve the \code{...}, if any.
+#'               Passed to \code{\link[base]{match.call}}
+#' @param expand.dots  Passed to \code{\link[base]{match.call}}. \code{TRUE} by
+#'                     default, set to \code{FALSE} to not include \code{...}
+fullargs <- function(syspar=sys.parent(),env=parent.frame(syspar)
+                     ,expand.dots=TRUE){
   fn <- sys.function(syspar);
   frm <- formals(fn);
   cll <- match.call(fn,sys.call(syspar),expand.dots = expand.dots,envir = env);
@@ -188,7 +247,10 @@ systemwrapper <- function(cmd='',...,VERBOSE=getOption('sysverbose',T)
 # git ----
 #' Simple git wrappers
 #'
-#' @param ... Passed to the git shell command.
+#' @param ... Passed to the \code{git} shell command via \code{system}.
+#'
+#' @template shellreturn
+#' @family git wrappers
 #' @name git
 NULL
 
@@ -196,7 +258,9 @@ NULL
 #' git checkout
 #'
 #' @param which The branch you wish to check out from the current repo.
-#' @param ...   Passed to the \code{git} shell command.
+#' @inheritParams git
+#'
+#' @family git wrappers
 git_checkout <- function(which=getOption('git.workingbranch','master'),...){
   systemwrapper('git checkout',which,...)};
 
@@ -227,6 +291,8 @@ gci <- git_commit;
 #' selected.}
 #'
 #' @param xx String containing one or more of A,C,D,M,R,T,U,X,B, or *
+#'
+#' @family git wrappers
 git_diff_filter <- function(xx) {
   system(paste('git diff --name-only --diff-filter',xx),intern=TRUE)};
 
@@ -235,7 +301,9 @@ git_diff_filter <- function(xx) {
 #' @param print        If \code{TRUE} (default) prints formatted results to
 #'                     console.
 #' @param diff_filters Which statuses to display (all of them, by default)
-#' @param ...          Passed to the underlying \code{git} shell command.
+#' @inheritParams git
+#'
+#' @family git wrappers
 git_status <- function(print=TRUE
                        ,diff_filters=list(Added='A',Copied='C',Deleted='D'
                                           ,Modified='M',Renamed='R'
@@ -285,16 +353,28 @@ git_ <- git_other;
 #' Make the specified file start getting tracked by the current git repository.
 #'
 #' @param files Character vector of file names.
-#' @param ...   Passed to the underlying \code{git} shell command.
+#' @inheritParams git
+#'
+#' @family git wrappers
 git_add <- function(files,...){
   systemwrapper('git add',files=files,...)};
 #' @rdname git_add
 gadd <- git_add;
 
-#' Rename a git file, so git knows you didn't delete it.
+#' Rename a file tracked by git, so git knows you did not delete it.
+#'
+#' @param from Current name/path of a file tracked by git.
+#' @param to   New name/path of a file tracked by git.
+#' @inheritParams git
+#'
+#' @family git wrappers
 git_rename <- function(from,to,...){systemwrapper('git rename',from,to,...)};
 
-#' Move a git file, so git knows you didn't delete it.
+#' Move a file tracked by git, so git knows you did not delete it.
+#'
+#' @inheritParams git_rename
+#'
+#' @family git wrappers
 git_move <- function(from,to,...) {systemwrapper('git mv',from,to,...)};
 
 #' \code{git_push}: Push committed changes to the origin (for example, but not
@@ -306,10 +386,18 @@ gp <- git_push;
 
 #' Create a new branch \emph{and} check it out immediately. Optionally also
 #' push.
-git_newbranch <- function(branch,pushorigin=F,...){
+#'
+#' @param branch     Name of the branch to create and immediately check out.
+#' @param pushorigin If \code{TRUE} will also push the new branch to the
+#'                   git repository with the \code{--set-upstream} option.
+#' @inheritParams git
+#'
+#' @family git wrappers
+git_newbranch <- function(branch,pushorigin=FALSE,...){
   systemwrapper('git checkout -b',branch,...);
-  if(pushorigin) systemwrapper('git push origin',branch);
+  if(pushorigin) systemwrapper('git push origin --set-upstream',branch);
 }
+#' @rdname git_newbranch
 gbr <- git_newbranch;
 
 # TODO: detect conflicts in advance and ask what to do
@@ -325,13 +413,14 @@ gmr <- git_merge;
 #' @param stopfile The name of a file which, if exists, will cause this function
 #'                 to exit without doing anything. Will silently return errors
 #'                 from shell but will not throw an error.
-#'
-#' @return If successful, \code{0}, otherwise an error code.
+#' @template shellreturn
 #' @export
 #'
 #' @examples
 #'
 #' \dontrun{ git_subupd() }
+#'
+#' @family git wrappers
 git_subupd <- function(stopfile='.developer'){if(!file.exists(stopfile)){
   unlink(systemwrapper("git submodule --quiet foreach 'echo $path'"
                        ,intern=TRUE,VERBOSE=FALSE)
@@ -341,18 +430,34 @@ git_subupd <- function(stopfile='.developer'){if(!file.exists(stopfile)){
   }};
 
 #' Automatically configure your global .gitconfig with your name and email
-#' (if not yet thus configured) so that git will allow you to commit changes
+#' (if not already configured) so that git will allow you to commit changes.
+#' If run from a script this function will not do anything other than set the
+#' upstream repository if applicable.
+#'
+#' @param upstream    The upstream repository to add. Can also be specified via
+#'                    \code{options('git.upstream')} which will become this
+#'                    argument's default value. If there is already an upstream
+#'                    repository configured, it will be left as-is.
+#' @inheritParams git
+#'
+#' @return NULL
+#'
+#' @examples git_autoconf()
+#' @export
+#' @family git wrappers
 git_autoconf <- function(upstream=getOption('git.upstream'),...){
   # should only be run in an interactive context
-  if(!'upstream' %in% system('git remote',intern=T) && !is.null(upstream)){
+  if(!'upstream' %in% system('git remote',intern=TRUE) && !is.null(upstream)){
     systemwrapper('git remote add upstream',upstream);
   }
   # Set username and email
-  if(length(.username <- system('git config user.name',intern=T))==0){
+  if(interactive() &&
+     length(.username <- system('git config user.name',intern=T))==0){
     message("Please type in your name as you want it to appear in git logs:");
     .username <- paste0('"',readline(),'"');
     systemwrapper('git config --global user.name',.username)};
-  if(length(.useremail <- system('git config user.email',intern=T))==0){
+  if(interactive() &&
+     length(.useremail <- system('git config user.email',intern=T))==0){
     message("Please type in your email as you want it to appear in git logs:");
     .useremail <- paste0('"',readline(),'"');
     systemwrapper('git config --global user.email',.useremail)};
@@ -360,7 +465,7 @@ git_autoconf <- function(upstream=getOption('git.upstream'),...){
 
 
 
-#' Title: Add a pattern to a .gitignore file
+#' Add a pattern to a .gitignore file
 #'
 #' @param patterns A character vector of patterns to ignore. Required.
 #'                 Always appended. If you need to un-ignore something
@@ -376,7 +481,8 @@ git_autoconf <- function(upstream=getOption('git.upstream'),...){
 #'
 #' @examples git_ignore(c('*.csv','*.tsv'))
 git_ignore <- function(patterns,ignorepath='.',preamble='') {
-  write(c(preamble,patterns),file.path(ignorepath,'.gitignore'),append=T)};
+  write(c(preamble,patterns),file.path(ignorepath,'.gitignore')
+        ,append=TRUE)};
 
 #' Switch between ssh authentication and ssl authentication for a git repo.
 #'
@@ -482,13 +588,13 @@ grepor <- function(xx,patterns='.') {
 #' @return Whatever object the underlying read function passed to `tread()`
 #'         will output, usually a class that inherits from `data.frame`
 #'
-#' @export
-t_autoread <- function(file,...){ #deps: getTryMsg
-  # make sure prerequisite function exists
-  if(requireNamespace('trailR')){
-    do.call(tread,c(list(file,readfun=autoread),list(...)))} else {
-      stop("The 't_autoread()' function only works if the trailR package is installed")
-    }};
+#' export
+# t_autoread <- function(file,...){ #deps: getTryMsg
+#   # make sure prerequisite function exists
+#   if(requireNamespace('trailR')){
+#     do.call(tread,c(list(file,readfun=autoread),list(...)))} else {
+#       stop("The 't_autoread()' function only works if the trailR package is installed")
+#     }};
 
 
 #' Autoguessing function for reading most common data formats
@@ -613,6 +719,38 @@ autoread <- function(file,na=c('','.','(null)','NULL','NA')
   }
 
 #' Sumarize a table column
+#'
+#' The following summary statistics are calculated on \code{col}:
+#' \tabular{rr}{
+#' \code{class} \tab a colon-delimited string with all the classes that
+#'              \code{col} belongs to \cr
+#' \code{uniquevals} \tab number of unique non-missing values \cr
+#' \code{isnum} \tab whether or not \code{col} is numeric (logical)\cr
+#' \code{frc_int} \tab the fraction of non-missing values in \code{col} that are
+#'                     integers\cr
+#' \code{n_nonmissing} \tab the number of non-missing values in \code{col}\cr
+#' \code{n_missing} \tab the number of missing values in \code{col}\cr
+#' \code{frc_missing} \tab the fraction of missing values in \code{col}\cr
+#' \code{n_nonrepeat} \tab the number of values that occur only once in
+#'                    \code{col}\cr
+#' \code{frc_nonrepeat} \tab the fraction of values in \code{col} that do not
+#'                      repeat\cr
+#' \code{top3} \tab the top three most commonly occurring values in \code{col}
+#'                  as a semicolon-delimited string
+#' }
+#'
+#' @param col          A vector of any type.
+#' @param custom_stats An \code{alist} of unevaluated calls or similar objects
+#'                     that will be evaluated in the scope described in the
+#'                     details section.
+#' @param ...          Additional named expressions that will also be evaluated
+#'                     in the scope described below but after the
+#'                     \code{custom_stats} expressions have been evaluated, so
+#'                     they can use any objects they have created.
+#'
+#' @return A list with the objects described in details, in addition to objects
+#'        having the same names as those in \code{custom_stats} and \code{...}
+#'        and the values those of the corresponding expressions.
 colinfo <- function(col,custom_stats=alist(),...){
   nn <- length(col);
   nona <- stats::na.omit(col);
@@ -639,22 +777,28 @@ colinfo <- function(col,custom_stats=alist(),...){
 
 #' Create an automated data dictionary
 #'
-#' @param dat          An object that inherits from `data.frame`
-#' @param custom_stats An `alist` of statistics to calculate on each
-#'                     column of `dat` in addition to the defaults
-#'                     in `info_cols` (below). Optional.
-#' @param info_cols    Another `alist`, this one has default values but
+#' The unevaluated expressions in \code{custom_stats} and \code{info_cols} use
+#' variables that exist during execution and are documented in
+#' \code{\link{colinfo}}
+#'
+#' @param dat          An object that inherits from \code{data.frame}
+#' @param custom_stats An \code{alist} of statistics to calculate on each
+#'                     column of \code{dat} in addition to the defaults
+#'                     in \code{info_cols} (below). Optional.
+#' @param info_cols    Another \code{alist}, this one has default values but
 #'                     can be overridden on an all-or-none basis.
 #' @param ...          Eats any extra arguments, to keep them from
 #'                     causing trouble.
 #'
-#' @return A data-frame having one row for each column in `dat`
+#' @return A data-frame having one row for each column in \code{dat}
 #' @export
 #'
 #' @examples
 #'
 #' tblinfo(datasets::iris)
 #'
+#' @seealso v
+#' @seealso colinfo
 tblinfo <- function(dat,custom_stats=alist()
                     # some handy column groupers
                     ,info_cols=alist(
@@ -742,6 +886,7 @@ tblinfo <- function(dat,custom_stats=alist()
 #' v(c_numeric,dict=dct1)
 #'
 #' @export
+#' @seealso tblinfo
 v <- function(var,dat
               ,retcol=getOption('tb.retcol','column')
               ,dictionary=get('dct0')
