@@ -8,7 +8,7 @@ instrequire(
   pkgs,
   quietly = TRUE,
   dependencies = TRUE,
-  repos = getOption("repos", "https://cran.rstudio.com/"),
+  repos = getOption("repos", "https://cloud.r-project.org"),
   ...
 )
 }

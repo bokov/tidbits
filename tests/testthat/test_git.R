@@ -18,8 +18,8 @@ test_that("git",{
   write('hello world','testfile.txt');
   expect_message(git_add('testfile.txt'),'git add testfile.txt'
                  ,'testfile.txt now being tracked on branch foo');
-  expect_silent(git_commit('testfile.txt','testing file commit'
-                            ,autopush = FALSE,VERBOSE=FALSE));
+  git_commit('testfile.txt','testing file commit',autopush = FALSE
+             ,VERBOSE=FALSE);
   expect_true('testfile.txt' %in% git_lsfiles('test*.txt',intern=TRUE
                                               ,VERBOSE=FALSE)
               ,'testfile.txt showing up in a list of files git is tracking');
@@ -36,7 +36,5 @@ test_that("git",{
   expect_equal(git_status(print=FALSE,VERBOSE=FALSE)$branch,origstate$branch);
   git_other('branch -D foo',VERBOSE=FALSE);
   expect_length(git_other('branch --list foo',VERBOSE=F,intern=T),0);
+  rm(origstate);
 })
-
-rm(origstate);
-c()

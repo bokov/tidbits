@@ -30,11 +30,13 @@ instrequire <- function(pkgs # nodeps
                         # the dependencies argument is ignored and is only here
                         # so that it doesn't end up in the '...'
                         ,dependencies=TRUE
-                        ,repos=getOption('repos','https://cran.rstudio.com/')
+                        ,repos=getOption('repos','https://cloud.r-project.org')
                         ,...){
+  if(repos == "@CRAN@") repos <- 'https://cloud.r-project.org';
   pkgs_installed <- sapply(pkgs,require,character.only=TRUE);
   if(length(pkgs_needed <- names(pkgs_installed[!pkgs_installed]))>0){
-    utils::install.packages(pkgs_needed,repos=repos,dependencies = TRUE,...);
+    utils::install.packages(pkgs_needed,repos=repos,dependencies = TRUE
+                            ,...);
     pkgs_final <- sapply(pkgs_needed,require,character.only=TRUE
                          ,quietly=quietly);
     if(!all(pkgs_final)){
