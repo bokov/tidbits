@@ -6,6 +6,7 @@ Description: These are various utilities I wrote to streamline my own work and t
 Depends: R (>= 3.4.4)
 Imports:
   data.table,
+  digest,
   dplyr,
   haven,
   knitr,

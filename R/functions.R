@@ -766,6 +766,7 @@ autoread <- function(file,na=c('','.','(null)','NULL','NA')
 #' @return A list with the objects described in details, in addition to objects
 #'        having the same names as those in \code{custom_stats} and \code{...}
 #'        and the values those of the corresponding expressions.
+#'
 colinfo <- function(col,custom_stats=alist(),...){
   nn <- length(col);
   nona <- stats::na.omit(col);
@@ -782,6 +783,7 @@ colinfo <- function(col,custom_stats=alist(),...){
               ,frc_nonrepeat=sum(coltab==1)/length(nona)
               ,top3=paste0('"',names(sort(coltab,decreasing = T)[1:3]),'"'
                               ,collapse='; ')
+              ,md5=digest::digest(col)
   );
   for(ii in names(custom_stats)){
     out[[ii]] <- eval(custom_stats[[ii]],envir = out)};
