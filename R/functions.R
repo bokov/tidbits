@@ -755,7 +755,6 @@ autoread <- function(file,na=c('','.','(null)','NULL','NA')
 #'        having the same names as those in \code{custom_stats} and \code{...}
 #'        and the values those of the corresponding expressions.
 #'
-#' @importFrom digest digest
 colinfo <- function(col,custom_stats=alist(),...){
   nn <- length(col);
   nona <- stats::na.omit(col);
