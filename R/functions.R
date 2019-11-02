@@ -972,8 +972,8 @@ find_relpath <- function(file,paths=c('..','../..','.'),recursive=F
   paths<-c(if(filebase!=file && file.exists(dirname(file))){
     dirname(file)} else c(),paths);
   for(ii in paths){
-    .paths <- file.path(c(ii,list.dirs(ii,full.names = T,recursive=recursive))
-                        ,filebase);
+    .paths <- unique(file.path(c(ii,list.dirs(ii,full.names = T,recursive=recursive))
+                        ,filebase));
     if(any(.found<-file.exists(.paths))){
       return(if(normalize) normalizePath(.paths[.found]) else .paths[.found])};
   }
