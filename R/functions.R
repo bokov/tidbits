@@ -523,6 +523,19 @@ git_ssh <- function(tossh=TRUE,sshstr='git@github.com:'
   systemwrapper('git remote -v');
 }
 
+#' Returns \code{TRUE} if the git command is available through \code{system} and
+#' \code{FALSE} otherwise.
+#'
+#' @param xx A git command to use for testing.
+#'
+#' @return logical
+#' @export
+#' @example git_exists()
+#'
+git_exists <- function(xx='--version'){
+  oo <- git_(xx,ignore.stdout=TRUE,ignore.stderr=TRUE,VERBOSE=FALSE);
+  oo==0;
+}
 
 # TODO: git nagger
 
