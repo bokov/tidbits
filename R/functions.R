@@ -1066,3 +1066,143 @@ allTheData <- function(verbose=TRUE){
   return(dt);
 };
 
+#' Read a file and split it according to lines containing the specified regular
+#' expression
+#'
+#' @param file       Name of text file to read in.
+#' @param sectionrxp Regular expression to identify section breaks in that file
+#' @param targetrxp  Optional target expression so that only sections containing
+#'                   that pattern are returned. Otherwise all sections returned.
+#' @param subfrom    Regexp indicating what to replace in order to extract the
+#'                   name of each section from its first line (if that line
+#'                   starts with a comment character).
+#' @param subto      Value with which to replace \code{subfrom}
+#' @param namefn     Optional function to extract names from sections. Should
+#'                   be able to accept three arguments, with the first one being
+#'                   a character vector representing a section of the file. The
+#'                   idea is for it assign a name to the section based on its
+#'                   contents.
+#' @param ...        Passed to \code{readLines}
+#'
+#' @return  List of character vectors, which may be named, but the names are not
+#'          guaranteed legal or unique.
+#'
+#' @export
+#'
+#' @examples
+#'
+#' # Note that section names are not necessarily legal variable names and not
+#' # necessarily unique
+#' cat('foo','bar','baz','#### section 1',123,456,789,'#### section 2'
+#'     ,'#### section 3','bob','boo','#### section 3','bla','bip'
+#'     ,'#### section 4','The End',sep='\n',file='file_w_sections.txt')
+#' filesections('file_w_sections.txt')
+#'
+#' # keep only sections 2 and 3
+#' filesections('file_w_sections.txt',targetrxp='^#{4} section [23]')
+#'
+#' # keep only sections where at least one line has the string 'oo'
+#' filesections('file_w_sections.txt',targetrxp='oo')
+#'
+#' # keep all sections EXCEPT 'section 2'
+#' filesections('file_w_sections.txt',targetrxp='^#{4} section [^2]')
+#'
+filesections <- function(file,sectionrxp='^#{4,}',targetrxp
+                         ,subfrom='^#*\\s*|\\s*#*$',subto=''
+                         ,namefn=function(xx,subfrom,subto){
+                           if(grepl("^#'",xx[1])||!grepl('^#',xx[1])) '' else {
+                             gsub(subfrom,subto,xx[1])}}
+                         ,...){
+  oo <- readLines(file,...);
+  sbreaks <- grep(sectionrxp,oo);
+  if(! 1 %in% sbreaks) sbreaks <- c(1,sbreaks);
+  oo <- Map(function(ii,jj) oo[ii:jj],sbreaks
+            ,cumsum(diff(c(sbreaks,length(oo)+1))));
+  names(oo) <- sapply(oo,namefn,subfrom=subfrom,subto=subto);
+  if(!missing(targetrxp)){
+    return(oo[sapply(oo,function(xx) any(grepl(targetrxp,xx)))])} else {
+      return(oo)};
+}
+
+#' Extract key-value pairs from structured data
+#'
+#' Simply reads each line, finds the
+#'
+#' @param lines       Character vector (e.g. read from a file) where each
+#'                    element is a line that could contain a key-value pair
+#' @param key         Character vector of key names
+#' @param joiner      Regexp for what to search for between each key and its
+#'                    value
+#' @param commentrxp  Regexp for stripping out comments
+#'
+#' @return Named list, where the names are in \code{key}
+#' @export
+#'
+#' @examples
+#' getkeyval(c('foo=1','bar=2','foo=DUPE','baz= 3 # comment',"bat = hello world"
+#'             ,"# bat = old value")
+#'           ,key=c('baz','foo','bat'))
+#'
+getkeyval <- function(lines,key,joiner='\\s*=\\s*',commentrxp='#'){
+  lines <- gsub(paste0(commentrxp,'.*$'),'',lines);
+  sapply(unique(key),function(xx){
+    gsub(paste0('.*',xx,joiner,'(.*)'),'\\1'
+         ,lines[grepl(paste0(xx,joiner),lines)])},simplify=FALSE)};
+
+
+#' The recursive file move that R is missing for some reason?
+#'
+#' @param from      Directory from which to move all files.
+#' @param to        Directory where to move them.
+#' @param backupdir Name of directory where to back up any existing files in
+#'                  \code{to} that would otherwise be overwritten with files
+#'                  from \code{from}.
+#' @param cleanup   Whether to delete the \code{from} directory.
+#'
+#' @return NULL
+#' @export
+#'
+#' @examples
+#' # source directory tree
+#' dir.create(file.path('foo','boo'),recursive=TRUE);
+#' file.create(file.path('foo',letters[1:5]));
+#' file.create(file.path('foo','boo','boing.txt'));
+#' dir.create(file.path('bar','boo'),recursive=TRUE);
+#' file.create(file.path('bar',letters[3:6]));
+#' file.create(file.path('bar','boo','boing.txt'));
+#'
+#' mergedirs('foo','bar');
+#'
+#' dir.exists('foo') # FALSE
+#' dir.exists('bar') # TRUE
+#' list.files('bar',recursive=TRUE);
+mergedirs <- function(from,to='.'
+                      ,backupdir=paste0('backup.'
+                                        ,format(Sys.time(),'%Y%m%d%H%M%S'))
+                      ,cleanup=getOption('cleanup',TRUE)){
+  sourcefiles <- list.files(from,all.files = TRUE,no.. = TRUE
+                            ,recursive = TRUE);
+  tobackup <- intersect(sourcefiles,list.files(to,all.files=TRUE,no..=TRUE
+                                               ,recursive = TRUE));
+  # recursively backup files with colliding names
+  if(length(tobackup)>0 ){
+    dir.create(file.path(to,backupdir));
+    for(ii in setdiff(dirname(tobackup),'.')){
+      dir.create(file.path(to,backupdir,ii),recursive = TRUE)};
+    message('The following files will be moved to ',tobackup
+            ,' in order to avoid being overwritten:\n'
+            ,paste0(tobackup,collapse=', '));
+    for(ii in tobackup) file.rename(file.path(to,ii)
+                                    ,file.path(to,backupdir,ii));
+  }
+  # create the TO directories if necessary
+  for(ii in setdiff(dirname(sourcefiles),'.')){
+    if(!dir.exists(file.path(to,ii))) dir.create(file.path(to,ii))};
+  # move file from the FROM locations
+  file.rename(file.path(from,sourcefiles),file.path(to,sourcefiles));
+  if(cleanup) unlink(from,recursive = TRUE,force = TRUE);
+  return(NULL);
+}
+
+
+c()
