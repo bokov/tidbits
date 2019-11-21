@@ -1010,8 +1010,9 @@ load_deps <- function(deps,scriptdir=getwd(),cachedir=scriptdir
         # specified path if one is provided
         message(sprintf('Trying to initialize cache using script %s'
                         ,iiscript));
-        .junk <- system(sprintf('R --no-restore -e ".workdir<-\'%s\'; source(\'%s\',chdir=T)"'
-                                ,cachedir,iiscript),intern = T);
+        .junk <- system(sprintf('R --no-restore -e ".workdir<-\'%s\'; source(\'%s\',chdir=TRUE)"'
+                                ,normalizePath(cachedir)
+                                ,normalizePath(iiscript)),intern = TRUE);
         # again try to find a valid path to it
         iicached <- find_path(paste0(ii,'.rdata')
                               ,c(cachedir,scriptdir,fallbackdir));
@@ -1024,7 +1025,7 @@ load_deps <- function(deps,scriptdir=getwd(),cachedir=scriptdir
       stop(sprintf('The cached file for %s could not be found',iiscript));
       # otherwise, the cached .rdata now exists one way or another, load it
     } else {
-      loadedobj <- union(loadedobj,loadfn(iicached,envir=envir));
+      loadedobj <- union(loadedobj,loadfn(normalizePath(iicached),envir=envir));
       message(sprintf('Loaded data for %s from %s',ii,iicached));
       };
   }
