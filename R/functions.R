@@ -784,6 +784,7 @@ colinfo <- function(col,custom_stats=alist(),...){
               ,frc_nonrepeat=sum(coltab==1)/length(nona)
               ,top3=paste0('"',names(sort(coltab,decreasing = T)[1:3]),'"'
                               ,collapse='; ')
+              ,frc_mostcommon=max(coltab)/nn
               ,md5=digest::digest(col)
   );
   for(ii in names(custom_stats)){
@@ -820,11 +821,14 @@ colinfo <- function(col,custom_stats=alist(),...){
 tblinfo <- function(dat,custom_stats=alist()
                     # some handy column groupers
                     ,info_cols=alist(
-                       c_empty=frc_missing==1,c_uninformative=n_nonmissing<2
+                       c_empty=frc_missing==1
+                      ,c_uninformative=n_nonmissing<2
                       ,c_ordinal=uniquevals<10&isnum
                       ,c_tm=uniquevals==1&n_missing>0
-                      ,c_tf=uniquevals==2,c_numeric=isnum&!c_ordinal
-                      ,c_factor=uniquevals<20&!isnum
+                      ,c_tf=uniquevals==2
+                      ,c_numeric=isnum&!c_ordinal
+                      ,c_factor=uniquevals<10&!isnum
+                      ,c_safe=frc_missing<.2 & frc_mostcommon < .7
                       ,c_complex=!(c_ordinal|c_tm|c_tf|c_numeric|c_factor)
                     ),...){
   out <- dplyr::bind_rows(sapply(dat,colinfo,custom_stats=custom_stats,simplify=F)
@@ -907,8 +911,13 @@ tblinfo <- function(dat,custom_stats=alist()
 #' @seealso tblinfo
 v <- function(var,dat
               ,retcol=getOption('tb.retcol','column')
-              ,dictionary=get('dct0')
+              ,dictionary=try(get('dct0'),silent = TRUE)
               ,asname=FALSE) {
+  # check built-in dictionary
+  if(!missing(dat) && (missing(dictionary) || is(dictionary,'try-error'))){
+    dictionary <- attr(dat,'tblinfo');
+    if(is.null(dictionary)) dictionary <- tblinfo(dat);
+  }
   # convenience function: if forgot what column names are available, call with
   # no arguments and they will be listed
   if(missing(var)) return(names(dictionary));
