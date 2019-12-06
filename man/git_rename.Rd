@@ -17,12 +17,13 @@ git_rename(from, to, ...)
 Rename a file tracked by git, so git knows you did not delete it.
 }
 \seealso{
-Other git wrappers: \code{\link{git_add}()},
-  \code{\link{git_autoconf}()},
-  \code{\link{git_checkout}()},
-  \code{\link{git_diff_filter}()},
-  \code{\link{git_move}()}, \code{\link{git_newbranch}()},
-  \code{\link{git_status}()}, \code{\link{git_subupd}()},
-  \code{\link{git}}
+Other git wrappers: 
+\code{\link{git_add}()},
+\code{\link{git_autoconf}()},
+\code{\link{git_diff_filter}()},
+\code{\link{git_newbranch}()},
+\code{\link{git_status}()},
+\code{\link{git_subupd}()},
+\code{\link{git}}
 }
 \concept{git wrappers}

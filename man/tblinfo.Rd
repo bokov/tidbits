@@ -9,8 +9,9 @@ tblinfo(
   custom_stats = alist(),
   info_cols = alist(c_empty = frc_missing == 1, c_uninformative = n_nonmissing < 2,
     c_ordinal = uniquevals < 10 & isnum, c_tm = uniquevals == 1 & n_missing > 0, c_tf =
-    uniquevals == 2, c_numeric = isnum & !c_ordinal, c_factor = uniquevals < 20 & !isnum,
-    c_complex = !(c_ordinal | c_tm | c_tf | c_numeric | c_factor)),
+    uniquevals == 2, c_numeric = isnum & !c_ordinal, c_factor = uniquevals < 10 & !isnum,
+    c_safe = frc_missing < 0.2 & frc_mostcommon < 0.7, c_complex = !(c_ordinal | c_tm |
+    c_tf | c_numeric | c_factor)),
   ...
 )
 }

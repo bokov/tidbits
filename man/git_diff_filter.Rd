@@ -21,11 +21,13 @@ comparison; if there is no file that matches other criteria, nothing is
 selected.}
 }
 \seealso{
-Other git wrappers: \code{\link{git_add}()},
-  \code{\link{git_autoconf}()},
-  \code{\link{git_checkout}()}, \code{\link{git_move}()},
-  \code{\link{git_newbranch}()},
-  \code{\link{git_rename}()}, \code{\link{git_status}()},
-  \code{\link{git_subupd}()}, \code{\link{git}}
+Other git wrappers: 
+\code{\link{git_add}()},
+\code{\link{git_autoconf}()},
+\code{\link{git_newbranch}()},
+\code{\link{git_rename}()},
+\code{\link{git_status}()},
+\code{\link{git_subupd}()},
+\code{\link{git}}
 }
 \concept{git wrappers}

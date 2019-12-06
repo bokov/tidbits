@@ -17,3 +17,7 @@ logical
 Returns \code{TRUE} if the git command is available through \code{system} and
 \code{FALSE} otherwise.
 }
+\examples{
+\dontrun{git_exists()}
+
+}

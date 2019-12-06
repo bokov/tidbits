@@ -25,12 +25,13 @@ Delete and re-download git submodules if any exist.
 
 }
 \seealso{
-Other git wrappers: \code{\link{git_add}()},
-  \code{\link{git_autoconf}()},
-  \code{\link{git_checkout}()},
-  \code{\link{git_diff_filter}()},
-  \code{\link{git_move}()}, \code{\link{git_newbranch}()},
-  \code{\link{git_rename}()}, \code{\link{git_status}()},
-  \code{\link{git}}
+Other git wrappers: 
+\code{\link{git_add}()},
+\code{\link{git_autoconf}()},
+\code{\link{git_diff_filter}()},
+\code{\link{git_newbranch}()},
+\code{\link{git_rename}()},
+\code{\link{git_status}()},
+\code{\link{git}}
 }
 \concept{git wrappers}

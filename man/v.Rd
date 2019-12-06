@@ -10,7 +10,7 @@ v(
   var,
   dat,
   retcol = getOption("tb.retcol", "column"),
-  dictionary = get("dct0"),
+  dictionary = try(get("dct0"), silent = TRUE),
   asname = FALSE
 )
 }

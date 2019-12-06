@@ -52,7 +52,7 @@ expression
 # necessarily unique
 cat('foo','bar','baz','#### section 1',123,456,789,'#### section 2'
     ,'#### section 3','bob','boo','#### section 3','bla','bip'
-    ,'#### section 4','The End',sep='\\n',file='file_w_sections.txt')
+    ,'#### section 4','The End',sep='\n',file='file_w_sections.txt')
 filesections('file_w_sections.txt')
 
 # keep only sections 2 and 3

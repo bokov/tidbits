@@ -5,6 +5,7 @@
 \alias{git_lsfiles}
 \alias{git_other}
 \alias{git_}
+\alias{git_move}
 \alias{git_push}
 \title{Simple git wrappers}
 \usage{
@@ -14,10 +15,16 @@ git_other(...)
 
 git_(...)
 
+git_move(from, to, ...)
+
 git_push(...)
 }
 \arguments{
 \item{...}{Passed to the \code{git} shell command via \code{system}.}
+
+\item{from}{Current name/path of a file tracked by git.}
+
+\item{to}{New name/path of a file tracked by git.}
 }
 \value{
 0 for successful execution unless \code{intern=TRUE} is part of \code{...} and if it is,
@@ -34,16 +41,19 @@ Simple git wrappers
                               combination of git arguments as arguments to
                               this function, leaving out \code{git} itself.
 
+\code{git_move}: Move a file tracked by git, so git knows you did not delete it.
+
 \code{git_push}: Push committed changes to the origin (for example, but not
 necessarily, github.com)
 }
 \seealso{
-Other git wrappers: \code{\link{git_add}()},
-  \code{\link{git_autoconf}()},
-  \code{\link{git_checkout}()},
-  \code{\link{git_diff_filter}()},
-  \code{\link{git_move}()}, \code{\link{git_newbranch}()},
-  \code{\link{git_rename}()}, \code{\link{git_status}()},
-  \code{\link{git_subupd}()}
+Other git wrappers: 
+\code{\link{git_add}()},
+\code{\link{git_autoconf}()},
+\code{\link{git_diff_filter}()},
+\code{\link{git_newbranch}()},
+\code{\link{git_rename}()},
+\code{\link{git_status}()},
+\code{\link{git_subupd}()}
 }
 \concept{git wrappers}
