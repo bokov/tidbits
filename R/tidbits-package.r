@@ -15,6 +15,6 @@ utils::globalVariables('tload');
 # tblinfo()
 utils::globalVariables(c('c_factor','c_numeric','c_ordinal','c_tf','c_tm'
                          ,'frc_missing','isnum','n_missing','n_nonmissing'
-                         ,'uniquevals'));
+                         ,'uniquevals','frc_mostcommon'));
 
 
