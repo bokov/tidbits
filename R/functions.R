@@ -227,6 +227,18 @@ get_os <- function(){ # nodeps
   tolower(os);
 };
 
+#' Simply take all the arguments and turn them into a comma-delimited string
+#' insertion into dynamically generated R code or whatever else needs it.
+#'
+#' @param ... Any arguments, named or un-named.
+#'
+#' @return    Character string
+#' @export
+#'
+#' @examples deparseargs(foo=42,bar="baz","Hello world")
+#'
+deparseargs <- function(...){
+  gsub('^list\\(|\\)','',deparse(list(...),control=c('keepInteger','keepNA')))}
 
 systemwrapper <- function(cmd='',...,VERBOSE=getOption('sysverbose',T)
                           ,CHECKFILES=c('files')){ # nodeps
@@ -260,7 +272,7 @@ NULL
 #' @param which The branch you wish to check out from the current repo.
 #' @inheritParams git
 #'
-#' @family git wrappers
+# @family git wrappers
 git_checkout <- function(which=getOption('git.workingbranch','master'),...){
   systemwrapper('git checkout',which,...)};
 
@@ -370,11 +382,11 @@ gadd <- git_add;
 #' @family git wrappers
 git_rename <- function(from,to,...){systemwrapper('git rename',from,to,...)};
 
-#' Move a file tracked by git, so git knows you did not delete it.
+#' \code{git_move}: Move a file tracked by git, so git knows you did not delete it.
 #'
 #' @inheritParams git_rename
 #'
-#' @family git wrappers
+#' @rdname git
 git_move <- function(from,to,...) {systemwrapper('git mv',from,to,...)};
 
 #' \code{git_push}: Push committed changes to the origin (for example, but not
@@ -530,7 +542,7 @@ git_ssh <- function(tossh=TRUE,sshstr='git@github.com:'
 #'
 #' @return logical
 #' @export
-#' @example git_exists()
+#' @examples \dontrun{git_exists()}
 #'
 git_exists <- function(xx='--version'){
   oo <- git_(xx,ignore.stdout=TRUE,ignore.stderr=TRUE,VERBOSE=FALSE);
@@ -988,8 +1000,23 @@ find_path <- function(file,paths=c('.','..')){
   return(c());
 }
 
-find_relpath <- function(file,paths=c('..','../..','.'),recursive=F
-                         ,normalize=T){
+#' Find a file in some adjacent path.
+#'
+#' @param file      Character string for one file or file path.
+#' @param paths     Paths where to look for this file, optional character
+#'                  vector.
+#' @param recursive Whether to look in subdirectories for this file, logical.
+#' @param lastonly  Logical. If more than one paths are found, and this is set
+#'                  to \code{TRUE} (default) then only return the first path.
+#' @param normalize Apply \code{normalizePath()} to results before returning.
+#'
+#' @return Character vector with path/s to file.
+#' @export
+#'
+#' @examples \dontrun{find_filepath('.Rprofile')}
+#'
+find_filepath <- function(file,paths=c('..','../..','.'),recursive=FALSE
+                         ,lastonly=TRUE,normalize=TRUE){
   filebase <- basename(file);
   paths<-c(if(filebase!=file && file.exists(dirname(file))){
     dirname(file)} else c(),paths);
@@ -997,15 +1024,49 @@ find_relpath <- function(file,paths=c('..','../..','.'),recursive=F
     .paths <- unique(file.path(c(ii,list.dirs(ii,full.names = T,recursive=recursive))
                         ,filebase));
     if(any(.found<-file.exists(.paths))){
-      return(if(normalize) normalizePath(.paths[.found]) else .paths[.found])};
+      out <- .paths[.found];
+      if(normalize) out <- normalizePath(out);
+      out <- unique(out);
+      if(lastonly) out <- utils::tail(out,1);
+      return(out)};
   }
   # if returns empty vector means none found
   return(c());
 }
 
+find_relpath <- find_filepath;
+
+#' Load or render script dependencies if not already cached.
+#'
+#' @param deps        Character vector of script names.
+#' @param scriptdir   Where to look for each script.
+#' @param cachedir    Where to save the \code{SCRIPTNAME.R.rdata} output from
+#'                    each script and where to first look for cached results if
+#'                    they exist.
+#' @param fallbackdir Where to look for each script that is not found in
+#'                    \code{scriptdir}.
+#' @param envir       Environment in which to evaluate scripts (recommend
+#'                    leaving unaltered).
+#' @param loadfn      Function for loading \code{SCRIPTNAME.R.rdata} cached
+#'                    results
+#' @param rendfn      String with name of function to run on each of the files.
+#'                    If it's not from the \code{base} library it should be
+#'                    fully qualified (i.e. like the default value). The two
+#'                    anticipated values for this argument are
+#'                    \code{'rmarkdown::render'} for generating reports together
+#'                    with cached output and \code{'source'} for generating just
+#'                    the output. Other functions might also do useful things,
+#'                    but no guarantees.
+#' @param ...         Arguments to pass to the function specified in
+#'                    \code{rendfn}
+#'
+#' @return Character vector of objects created and saved by the scripts that
+#'         have been loaded into the working environment.
 load_deps <- function(deps,scriptdir=getwd(),cachedir=scriptdir
                       ,fallbackdir='scripts',envir=parent.frame()
-                      ,loadfn=if(exists('tload')) tload else load ){
+                      ,loadfn=if(exists('tload')) tload else load
+                      ,rendfn='rmarkdown::render'
+                      ,...){
   if(length(deps)==0||identical(deps,'')){message('No dependencies.');return();}
   # what objects got loaded by this function
   loadedobj=c();
