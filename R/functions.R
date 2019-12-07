@@ -1008,6 +1008,8 @@ find_path <- function(file,paths=c('.','..')){
 #' @param file      Character string for one file or file path.
 #' @param paths     Paths where to look for this file, optional character
 #'                  vector.
+#' @param pathexcl  Character vector of regular expressions for excluding
+#'                  paths that would otherwise match.
 #' @param recursive Whether to look in subdirectories for this file, logical.
 #' @param lastonly  Logical. If more than one paths are found, and this is set
 #'                  to \code{TRUE} (default) then only return the first path.
@@ -1018,11 +1020,13 @@ find_path <- function(file,paths=c('.','..')){
 #'
 #' @examples \dontrun{find_filepath('.Rprofile')}
 #'
-find_filepath <- function(file,paths=c('..','../..','.'),recursive=FALSE
-                         ,lastonly=TRUE,normalize=TRUE){
+find_filepath <- function(file,paths=c('..','../..','.')
+                          ,pathexcl=c('^backup')
+                          ,recursive=FALSE,lastonly=TRUE,normalize=TRUE){
   filebase <- basename(file);
   paths<-c(if(filebase!=file && file.exists(dirname(file))){
     dirname(file)} else c(),paths);
+  if(length(pathexcl)>0) paths <- setdiff(paths,grepor(paths,pathexcl));
   for(ii in paths){
     .paths <- unique(file.path(c(ii,list.dirs(ii,full.names = T,recursive=recursive))
                         ,filebase));

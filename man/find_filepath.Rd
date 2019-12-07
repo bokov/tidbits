@@ -7,6 +7,7 @@
 find_filepath(
   file,
   paths = c("..", "../..", "."),
+  pathexcl = c("^backup"),
   recursive = FALSE,
   lastonly = TRUE,
   normalize = TRUE
@@ -17,6 +18,9 @@ find_filepath(
 
 \item{paths}{Paths where to look for this file, optional character
 vector.}
+
+\item{pathexcl}{Character vector of regular expressions for excluding
+paths that would otherwise match.}
 
 \item{recursive}{Whether to look in subdirectories for this file, logical.}
 
