@@ -1026,10 +1026,10 @@ find_filepath <- function(file,paths=c('..','../..','.')
   filebase <- basename(file);
   paths<-c(if(filebase!=file && file.exists(dirname(file))){
     dirname(file)} else c(),paths);
-  if(length(pathexcl)>0) paths <- setdiff(paths,grepor(paths,pathexcl));
   for(ii in paths){
     .paths <- unique(file.path(c(ii,list.dirs(ii,full.names = T,recursive=recursive))
                         ,filebase));
+    if(length(pathexcl)>0) .paths <- setdiff(.paths,grepor(.paths,pathexcl));
     if(any(.found<-file.exists(.paths))){
       out <- .paths[.found];
       if(normalize) out <- normalizePath(out);
