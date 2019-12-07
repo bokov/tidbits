@@ -840,7 +840,10 @@ tblinfo <- function(dat,custom_stats=alist()
                       ,c_tf=uniquevals==2
                       ,c_numeric=isnum&!c_ordinal
                       ,c_factor=uniquevals<10&!isnum
-                      ,c_safe=frc_missing<.2 & frc_mostcommon < .7
+                      ,c_safe=frc_missing<.2 & frc_mostcommon < .7 &
+                        !c_uninformative
+                      ,c_safetf=c_safe & c_tf
+                      ,c_safenumeric=c_safe & c_numeric
                       ,c_complex=!(c_ordinal|c_tm|c_tf|c_numeric|c_factor)
                     ),...){
   out <- dplyr::bind_rows(sapply(dat,colinfo,custom_stats=custom_stats,simplify=F)
