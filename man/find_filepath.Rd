@@ -7,7 +7,7 @@
 find_filepath(
   file,
   paths = c("..", "../..", "."),
-  pathexcl = c("^backup"),
+  pathexcl = c("backup"),
   recursive = FALSE,
   lastonly = TRUE,
   normalize = TRUE

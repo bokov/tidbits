@@ -1021,7 +1021,7 @@ find_path <- function(file,paths=c('.','..')){
 #' @examples \dontrun{find_filepath('.Rprofile')}
 #'
 find_filepath <- function(file,paths=c('..','../..','.')
-                          ,pathexcl=c('^backup')
+                          ,pathexcl=c('backup')
                           ,recursive=FALSE,lastonly=TRUE,normalize=TRUE){
   filebase <- basename(file);
   paths<-c(if(filebase!=file && file.exists(dirname(file))){
@@ -1248,6 +1248,9 @@ getkeyval <- function(lines,key,joiner='\\s*=\\s*',commentrxp='#'){
 #' @param backupdir Name of directory where to back up any existing files in
 #'                  \code{to} that would otherwise be overwritten with files
 #'                  from \code{from}.
+#' @param mvpatt    Character vector of regular expression patterns for files
+#'                  to move to the backup directory even if they do not collide
+#'                  with the new files.
 #' @param cleanup   Whether to delete the \code{from} directory.
 #'
 #' @return NULL
@@ -1270,11 +1273,13 @@ getkeyval <- function(lines,key,joiner='\\s*=\\s*',commentrxp='#'){
 mergedirs <- function(from,to='.'
                       ,backupdir=paste0('backup.'
                                         ,format(Sys.time(),'%Y%m%d%H%M%S'))
-                      ,cleanup=getOption('cleanup',TRUE)){
+                      ,mvpatt=c(),cleanup=getOption('cleanup',TRUE)){
   sourcefiles <- list.files(from,all.files = TRUE,no.. = TRUE
                             ,recursive = TRUE);
-  tobackup <- intersect(sourcefiles,list.files(to,all.files=TRUE,no..=TRUE
-                                               ,recursive = TRUE));
+  currentfiles <- list.files(to,all.files=TRUE,no..=TRUE,recursive = TRUE);
+  tobackup <- intersect(sourcefiles,currentfiles);
+  if(length(mvpatt)>0){
+    tobackup <- union(tobackup,grepor(currentfiles,mvpatt))};
   # recursively backup files with colliding names
   if(length(tobackup)>0 ){
     dir.create(file.path(to,backupdir));

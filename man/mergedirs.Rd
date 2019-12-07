@@ -8,6 +8,7 @@ mergedirs(
   from,
   to = ".",
   backupdir = paste0("backup.", format(Sys.time(), "\%Y\%m\%d\%H\%M\%S")),
+  mvpatt = c(),
   cleanup = getOption("cleanup", TRUE)
 )
 }
@@ -19,6 +20,10 @@ mergedirs(
 \item{backupdir}{Name of directory where to back up any existing files in
 \code{to} that would otherwise be overwritten with files
 from \code{from}.}
+
+\item{mvpatt}{Character vector of regular expression patterns for files
+to move to the backup directory even if they do not collide
+with the new files.}
 
 \item{cleanup}{Whether to delete the \code{from} directory.}
 }
