@@ -786,6 +786,7 @@ colinfo <- function(col,custom_stats=alist(),...){
   isna <- is.na(col);
   coltab <- table(nona);
   out <- list(class=paste0(class(col),collapse=':')
+              ,nn=nn
               ,uniquevals=length(coltab)
               ,isnum=is.numeric(col)
               ,frc_int=if(is.numeric(nona)) mean(nona%%1==0) else 0
@@ -835,11 +836,11 @@ tblinfo <- function(dat,custom_stats=alist()
                     ,info_cols=alist(
                        c_empty=frc_missing==1
                       ,c_uninformative=n_nonmissing<2
-                      ,c_ordinal=uniquevals<10&isnum
+                      ,c_ordinal=uniquevals<min(10,nn)&isnum
                       ,c_tm=uniquevals==1&n_missing>0
                       ,c_tf=uniquevals==2
                       ,c_numeric=isnum&!c_ordinal
-                      ,c_factor=uniquevals<10&!isnum
+                      ,c_factor=uniquevals<min(10,nn)&!isnum
                       ,c_safe=frc_missing<.2 & frc_mostcommon < .7 &
                         !c_uninformative
                       ,c_safetf=c_safe & c_tf
