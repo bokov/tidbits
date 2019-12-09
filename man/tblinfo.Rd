@@ -8,11 +8,12 @@ tblinfo(
   dat,
   custom_stats = alist(),
   info_cols = alist(c_empty = frc_missing == 1, c_uninformative = n_nonmissing < 2,
-    c_ordinal = uniquevals < min(10, nn) & isnum, c_tm = uniquevals == 1 & n_missing > 0,
-    c_tf = uniquevals == 2, c_numeric = isnum & !c_ordinal, c_factor = uniquevals <
-    min(10, nn) & !isnum, c_safe = frc_missing < 0.2 & frc_mostcommon < 0.7 &
-    !c_uninformative, c_safetf = c_safe & c_tf, c_safenumeric = c_safe & c_numeric,
-    c_complex = !(c_ordinal | c_tm | c_tf | c_numeric | c_factor)),
+    c_ordinal = uniquevals < min(10, nn) & uniquevals > 0 & isnum, c_tm = uniquevals == 1
+    & n_missing > 0, c_tf = uniquevals == 2, c_numeric = isnum & !c_ordinal, c_factor =
+    uniquevals < min(10, nn) & !isnum, c_safe = frc_missing < 0.2 & frc_mostcommon < 0.7 &
+    !c_uninformative & !(!c_numeric & uniquevals > 15), c_safetf = c_safe & c_tf,
+    c_safenumeric = c_safe & c_numeric, c_complex = !(c_ordinal | c_tm | c_tf | c_numeric
+    | c_factor)),
   ...
 )
 }
