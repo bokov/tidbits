@@ -15,7 +15,7 @@ jobs:
       dist: trusty
       env: R_CODECOV=true
     - os: osx
-      before_install: Rscript -e "options(install.packages.check.source='no'); options(install.packages.compile.from.source='never'); utils::install.packages('data.table',type='binary',dependencies=TRUE)"
+      install: Rscript -e ".travis_macinstall.R"
       #osx_image: xcode8.3
 
 #before_install:
