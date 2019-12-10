@@ -1,7 +1,8 @@
-# do everything we can to install the latest BINARY version dammit
+message('** Starting custom install of dependencies **');
+
 if(!requireNamespace("remotes", quietly = TRUE)){
   install.packages("remotes")};
-message('** Starting custom install of dependencies **');
+# do everything we can to install the latest BINARY version dammit
 options(install.packages.check.source='no');
 options(install.packages.compile.from.source='never');
 deps <- remotes::dev_package_deps(dependencies = NA);

@@ -9,3 +9,4 @@
 ^appveyor\.yml$
 man-roxygen
 .out
+.travis_macinstall.R
