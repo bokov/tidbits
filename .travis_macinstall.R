@@ -1,4 +1,5 @@
 message('** Starting custom install of dependencies **');
+message('\nThese are the files I see:\n',paste0(list.files(),collapse=', '),'\n');
 
 if(!requireNamespace("remotes", quietly = TRUE)){
   install.packages("remotes")};
