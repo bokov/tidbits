@@ -8,6 +8,9 @@ instrequire(
   pkgs,
   quietly = TRUE,
   dependencies = TRUE,
+  type = "binary",
+  checksource = "no",
+  compile = "never",
   repos = getOption("repos", "https://cran.rstudio.com/"),
   ...
 )
@@ -20,6 +23,16 @@ by a script that uses this command.}
 
 \item{dependencies}{whether to also install dependencies, passed to
 \code{\link[utils]{install.packages}}}
+
+\item{type}{passed to \code{link[utils]{install.packages}}}
+
+\item{checksource}{temporarily sets
+\code{options('install.packages.check.source')}
+to this value}
+
+\item{compile}{temporarily sets
+\code{options('install.packages.compile.from.source')}
+to this value}
 
 \item{repos}{passed to \code{\link[utils]{install.packages}} to
 specify which repositories to use (optional).}
