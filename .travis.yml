@@ -15,7 +15,8 @@ jobs:
       dist: trusty
       env: R_CODECOV=true
     - os: osx
-      install: Rscript -e "$TRAVIS_BUILD_DIR/.travis_macinstall.R"
+      before_install: cd $TRAVIS_BUILD_DIR
+      install: Rscript ".travis_macinstall.R"
       #osx_image: xcode8.3
 
 #before_install:
