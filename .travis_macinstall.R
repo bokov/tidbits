@@ -9,6 +9,10 @@ options(install.packages.compile.from.source='never');
 deps <- remotes::dev_package_deps(dependencies = NA);
 utils::install.packages('data.table',type='binary');
 remotes::install_deps(dependencies = TRUE,type='binary',upgrade='never');
+options(install.packages.check.source=NULL);
+options(install.packages.compile.from.source=NULL);
+utils::install.packages('BH');
+utils::install.packages('plogr');
 if (!all(deps$package %in% installed.packages())) {
   message("missing: ", paste(setdiff(deps$package, installed.packages())
                              , collapse=", "))};
