@@ -15,5 +15,5 @@ utils::install.packages('BH');
 utils::install.packages('plogr');
 if (!all(deps$package %in% installed.packages())) {
   message("missing: ", paste(setdiff(deps$package, installed.packages())
-                             , collapse=", "))};
-q(status = 1, save = "no")
+                             , collapse=", "));
+  q(status = 1, save = "no")};
