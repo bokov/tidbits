@@ -8,7 +8,7 @@ instrequire(
   pkgs,
   quietly = TRUE,
   dependencies = TRUE,
-  type = "binary",
+  type = if (get_os() \%in\% c("osx", "windows")) {     "binary" } else "source",
   checksource = "no",
   compile = "never",
   repos = getOption("repos", "https://cran.rstudio.com/"),
@@ -24,7 +24,9 @@ by a script that uses this command.}
 \item{dependencies}{whether to also install dependencies, passed to
 \code{\link[utils]{install.packages}}}
 
-\item{type}{passed to \code{link[utils]{install.packages}}}
+\item{type}{passed to \code{link[utils]{install.packages}}. By
+default it is \code{'binary'} for all MacOS and Windows
+and \code{'source'} otherwise}
 
 \item{checksource}{temporarily sets
 \code{options('install.packages.check.source')}
@@ -46,6 +48,12 @@ This function takes a list of package names, loads them if they are
 available, otherwise attempts to install each one and then again
 attempts to load it. Will produce an error if any packages in \code{pkgs}
 are not possible to install and load.
+}
+\details{
+The goal is to provide a robust and automation-friendly alternative to
+putting a bunch of \code{\link[base]{require}} or \code{\link[base]{library}}
+statements at the start of each script and have them keep erroring until each
+dependency is manually installed.
 }
 \examples{
 instrequire(c('readr','readxl','tibble'))
