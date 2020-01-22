@@ -958,7 +958,7 @@ v <- function(var,dat
               ,dictionary=try(get('dct0'),silent = TRUE)
               ,asname=FALSE) {
   # check built-in dictionary
-  if(!missing(dat) && (missing(dictionary) || is(dictionary,'try-error'))){
+  if(!missing(dat) && (is.null(dictionary) || is(dictionary,'try-error'))){
     dictionary <- attr(dat,'tblinfo');
     if(is.null(dictionary)) dictionary <- tblinfo(dat);
   }
