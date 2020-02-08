@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions.R
 \name{autoread}
 \alias{autoread}
-\title{Extends trailR package with integrated universal (almost) file reader}
+\title{Autoguessing function for reading most common data formats}
 \usage{
 autoread(
   file,
@@ -38,17 +38,9 @@ be added to those in `file_args` overriding any that have
 matching names.}
 }
 \value{
-Whatever object the underlying read function passed to `tread()`
-        will output, usually a class that inherits from `data.frame`
-
-export
-Autoguessing function for reading most common data formats
-
-Supported so far are: xls, xlsx, csv and most other delimited text formats,
-SPSS, Stata, and SAS.
-
 A `tibble`
 }
 \description{
-Extends trailR package with integrated universal (almost) file reader
+Supported so far are: xls, xlsx, csv and most other delimited text formats,
+SPSS, Stata, and SAS.
 }

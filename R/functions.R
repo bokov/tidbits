@@ -652,6 +652,51 @@ grepor <- function(xx,patterns='.') {
 #       stop("The 't_autoread()' function only works if the trailR package is installed")
 #     }};
 
+#' Try to find a better number of initial rows to skip in a data frame like
+#' object in order to not have columns get incorrectly coerced to character.
+#'
+#' @param data      An object that inherits from \code{data.frame} or possibly
+#'                  \code{matrix}
+#' @param tryrows   Number of leading rows in which to look for the header
+#' @param totalrows The number of total rows to scan during each attempt (but
+#'                  this is just for scans, the final result will always have
+#'                  as many rows as possible after the one where the header is
+#'                  found)
+#' @param ...       Not currently used.
+#'
+#' @return A data.frame
+#' @export
+#'
+#' @examples
+#'
+#' foo <- unname(rbind(letters[1:5],c(NA,NA,'FOO',NA,3),names(iris)
+#'                     ,as.matrix(iris)));
+#' head(foo);
+#' sapply(foo,class);
+#'
+#' foo0 <- findheader(foo);
+#' head(foo0);
+#' sapply(foo,class);
+#'
+findheader <- function(data,tryrows=10,totalrows=40,...){
+  textdata <- apply(data,1,function(xx){
+    paste0('"',paste(xx,collapse='","'),'"')});
+  baseline <- mean(sapply(data,class)=='character');
+  summdata <- lapply(1:tryrows,function(xx){
+    sapply(data.table::fread(text=textdata,skip=xx,na.strings = c('NA','"NA"')
+                             ,nrows=40),class)
+    }) %>% sapply(function(xx){
+      c(vcols=mean(grepl('^V[0-9]+',names(xx))),chars=mean(xx=='character'))
+      });
+  if(any(summdata[2,]<baseline)){
+    pass01 <- min(summdata[1,])==summdata[1,];
+    pass02 <- min(summdata[2,])==summdata[2,];
+    select <- if(sum(pass01)>1) pass01 & pass02 else pass01;
+    return(data.table::fread(text=textdata,skip=match(TRUE,select),
+                             ,na.strings=c('NA','"NA"'),data.table=FALSE));
+  } else return(data);
+}
+
 
 #' Autoguessing function for reading most common data formats
 #'
