@@ -2,7 +2,8 @@
 % Please edit documentation in R/functions.R
 \name{findheader}
 \alias{findheader}
-\title{Extends trailR package with integrated universal (almost) file reader}
+\title{Try to find a better number of initial rows to skip in a data frame like
+object in order to not have columns get incorrectly coerced to character.}
 \usage{
 findheader(data, tryrows = 10, totalrows = 40, ...)
 }
@@ -18,21 +19,13 @@ as many rows as possible after the one where the header is
 found)}
 
 \item{...}{Not currently used.}
-
-\item{file}{Any of the common delimited file formats}
 }
 \value{
-Whatever object the underlying read function passed to `tread()`
-        will output, usually a class that inherits from `data.frame`
-
-export
-Try to find a better number of initial rows to skip in a data frame like
-object in order to not have columns get incorrectly coerced to character.
-
 A data.frame
 }
 \description{
-Extends trailR package with integrated universal (almost) file reader
+Try to find a better number of initial rows to skip in a data frame like
+object in order to not have columns get incorrectly coerced to character.
 }
 \examples{
 

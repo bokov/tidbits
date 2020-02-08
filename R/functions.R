@@ -636,15 +636,15 @@ grepor <- function(xx,patterns='.') {
 
 # table utilities ----
 
-#' Extends trailR package with integrated universal (almost) file reader
-#'
-#' @param file Any of the common delimited file formats
-#' @param ... Arguments passed to `tread()`
-#'
-#' @return Whatever object the underlying read function passed to `tread()`
-#'         will output, usually a class that inherits from `data.frame`
-#'
-#' export
+# Extends trailR package with integrated universal (almost) file reader
+#
+# @param file Any of the common delimited file formats
+# @param ... Arguments passed to `tread()`
+#
+# @return Whatever object the underlying read function passed to `tread()`
+#         will output, usually a class that inherits from `data.frame`
+#
+# export
 # t_autoread <- function(file,...){ #deps: getTryMsg
 #   # make sure prerequisite function exists
 #   if(requireNamespace('trailR')){
