@@ -364,19 +364,27 @@ git_status <- function(print=TRUE
     system(paste('git log',paste0(tracking,'..',branch),'--oneline')
            ,intern=T)};
   diffs <- lapply(diff_filters,git_diff_filter);
-  if(print){
-    message('Branch: ',branch);
+    status <- '';
     if(length(commits)>0) {
-      message('Ahead of ',tracking,' by ',length(commits),' commit'
-              ,if(length(commits)>1) 's.' else '.')} else {
-                if(!any(sapply(diffs,length)>0)){
-                  message('All local changes have already been pushed')}};
-    # TODO: check for un-pulled upstream changes
+      status <-paste0('Ahead of ',tracking,' by ',length(commits),' commit'
+                      ,if(length(commits)>1) 's.' else '.')}
+    # else {
+    #                     if(!any(sapply(diffs,length)>0)){
+    #                       message('All local changes have already been pushed')
+    #                       }};
+    #  TODO: check for un-pulled upstream changes
+    iistatus <- '';
     for(ii in names(diffs)) if(length(diffs[[ii]])>0){
-      message(ii,':'); cat(paste(' ',diffs[[ii]]),sep='\n');}
+      iistatus <- paste0(iistatus,'\n',ii,':\n ',paste0(diffs[[ii]]),sep='\n ');}
+    status <- paste0(status,iistatus);
+    if(print){
+      message('Branch: ',branch);
+      if(status!='') message(status) else {
+        message('All local changes have already been pushed')};
     }
-  invisible(list(branch=branch,tracking=tracking,commits=commits,hash=hash
-                 ,diffs=diffs,url=url,githost=githost,repo=repo));
+    invisible(list(branch=branch,tracking=tracking,commits=commits,hash=hash
+                   ,diffs=diffs,url=url,githost=githost,repo=repo
+                   ,status=status));
 }
 
 #' @rdname git_status
