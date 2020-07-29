@@ -350,9 +350,16 @@ git_status <- function(print=TRUE
                                           ,ChangedType='T',Unmerged='U'
                                           ,Unknown='X',Broken='B')
                        ,...){
+  # .url is a tranformed url for easier extraction of githost and gitrepo
+  # the actual url variable is the literal string from git config
+  .url <- submulti(url<-system('git config --get remote.origin.url',intern=T)
+                  ,rbind(c('(^http[s]?|git)(://|@)',''),c(':','/')));
+  githost <- dirname(dirname(.url));
+  repo <- sub(paste0(dirname(dirname(.url)),'/'),'',.url,fixed=T);
   branch <- system('git rev-parse --abbrev-ref HEAD',intern=T);
   tracking <- system('git rev-parse --abbrev-ref --symbolic-full-name @{u}'
                      ,intern=T);
+  hash <- system("git log --pretty=format:'%h' -n 1", intern=T);
   commits <- if(length(tracking)==0) character(0) else {
     system(paste('git log',paste0(tracking,'..',branch),'--oneline')
            ,intern=T)};
@@ -368,8 +375,8 @@ git_status <- function(print=TRUE
     for(ii in names(diffs)) if(length(diffs[[ii]])>0){
       message(ii,':'); cat(paste(' ',diffs[[ii]]),sep='\n');}
     }
-  invisible(list(branch=branch,tracking=tracking,commits=commits
-                 ,diffs=diffs));
+  invisible(list(branch=branch,tracking=tracking,commits=commits,hash=hash
+                 ,diffs=diffs,url=url,githost=githost,repo=repo));
 }
 
 #' @rdname git_status
