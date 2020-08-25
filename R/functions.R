@@ -174,19 +174,6 @@ getParentDots <- function(xx,call=sys.call(-1),fun=sys.function(-1)){ # revdeps:
   out;
 }
 
-# Credit: http://conjugateprior.org/2015/06/identifying-the-os-from-r/
-get_os <- function(){ # nodeps
-  sysinf <- Sys.info();
-  if (!is.null(sysinf)){
-    os <- sysinf['sysname'];
-    if (os == 'Darwin') os <- "osx";
-  } else { ## mystery machine
-    os <- .Platform$OS.type;
-    if (grepl("^darwin", R.version$os)) os <- "osx";
-    if (grepl("linux", R.version$os)) os <- "linux";
-  }
-  tolower(os);
-};
 
 #' Simply take all the arguments and turn them into a comma-delimited string
 #' insertion into dynamically generated R code or whatever else needs it.
@@ -1220,6 +1207,9 @@ allTheData <- function(verbose=TRUE){
 #' # keep all sections EXCEPT 'section 2'
 #' filesections('file_w_sections.txt',targetrxp='^#{4} section [^2]')
 #'
+#' # clean up
+#' unlink('file_w_sections.txt',force=TRUE)
+#'
 filesections <- function(file,sectionrxp='^#{4,}',targetrxp
                          ,subfrom='^#*\\s*|\\s*#*$',subto=''
                          ,namefn=function(xx,subfrom,subto){
@@ -1292,6 +1282,7 @@ getkeyval <- function(lines,key,joiner='\\s*=\\s*',commentrxp='#'){
 #' dir.exists('foo') # FALSE
 #' dir.exists('bar') # TRUE
 #' list.files('bar',recursive=TRUE);
+#' unlink('bar',force=TRUE); # clean up
 mergedirs <- function(from,to='.'
                       ,backupdir=paste0('backup.'
                                         ,format(Sys.time(),'%Y%m%d%H%M%S'))

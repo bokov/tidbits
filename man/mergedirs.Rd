@@ -44,4 +44,5 @@ mergedirs('foo','bar');
 dir.exists('foo') # FALSE
 dir.exists('bar') # TRUE
 list.files('bar',recursive=TRUE);
+unlink('bar',force=TRUE); # clean up
 }

@@ -1,3 +1,19 @@
+# Credit: http://conjugateprior.org/2015/06/identifying-the-os-from-r/
+# Used by instrequire() (below)
+get_os <- function(){ # nodeps
+  sysinf <- Sys.info();
+  if (!is.null(sysinf)){
+    os <- sysinf['sysname'];
+    if (os == 'Darwin') os <- "osx";
+  } else { ## mystery machine
+    os <- .Platform$OS.type;
+    if (grepl("^darwin", R.version$os)) os <- "osx";
+    if (grepl("linux", R.version$os)) os <- "linux";
+  }
+  tolower(os);
+};
+
+
 #' try to install and load each of a list of packages
 #'
 #' This function takes a list of package names, loads them if they are

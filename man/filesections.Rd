@@ -64,4 +64,7 @@ filesections('file_w_sections.txt',targetrxp='oo')
 # keep all sections EXCEPT 'section 2'
 filesections('file_w_sections.txt',targetrxp='^#{4} section [^2]')
 
+# clean up
+unlink('file_w_sections.txt',force=TRUE)
+
 }
