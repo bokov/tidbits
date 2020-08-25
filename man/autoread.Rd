@@ -7,8 +7,8 @@
 autoread(
   file,
   na = c("", ".", "(null)", "NULL", "NA"),
-  fixnames = function(xx) {     stats::setNames(xx, tolower(make.names(names(xx), unique
-    = TRUE))) },
+  fixnames = function(xx) {     stats::setNames(xx, tolower(make.names(names(xx),
+    unique = TRUE))) },
   file_args = list(),
   ...
 )
