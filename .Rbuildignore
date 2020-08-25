@@ -10,3 +10,5 @@
 man-roxygen
 .out
 .travis_macinstall.R
+.gitignore
+
