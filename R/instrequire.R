@@ -70,8 +70,13 @@ instrequire <- function(pkgs # nodeps
   suppressWarnings(pkgs_installed <- sapply(pkgs,require,character.only=TRUE
                                             ,quietly=quietly));
   if(length(pkgs_needed <- names(pkgs_installed[!pkgs_installed]))>0){
-    utils::install.packages(pkgs_needed,repos=repos,dependencies = TRUE
-                            ,type=type,...);
+    for(ii in pkgs_needed){
+      # the extra require() is to avoid double-installing packages that
+      # have already been installed as a dependency of some other package
+      if(!require(ii,character.only=TRUE,quietly=quietly)){
+        utils::install.packages(ii,repos=repos, quiet=quietly
+                                ,dependencies = dependencies,type=type,...);
+      }};
     pkgs_final <- sapply(pkgs_needed,require,character.only=TRUE
                          ,quietly=quietly);
     if(!all(pkgs_final)){
