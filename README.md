@@ -30,7 +30,7 @@ library(tidbits);
 #> The following object is masked from 'package:grDevices':
 #> 
 #>     cm
-# Read data from the NAACCR website
+# Read data from the NAACCR website ...
 dat00 <- autoread('https://www.naaccr.org/wp-content/uploads/2017/02/naaccr_cina_2009_2013_stage.sas7bdat');
 # Build an automatic data dictionary
 dct0 <- tblinfo(dat00)
